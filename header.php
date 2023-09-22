@@ -7,4 +7,6 @@
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-    <!-- Encabezado del sitio -->
+    <head>
+        
+    </head>
