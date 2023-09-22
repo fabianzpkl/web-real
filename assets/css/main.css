@@ -1,1 +1,1 @@
-body{background:#f00}
+header{position:fixed;width:100%;top:0;left:0;background:rgba(0,0,0,0.4);-webkit-backdrop-filter:blur(13px);backdrop-filter:blur(13px)}header .cont-header{width:calc(100% - 300px)}header .cont-header .logo{display:inline-block;vertical-align:top;background:#fff;padding:15px}header .cont-header .cont-menu{display:inline-block;vertical-align:top}header .cont-header .cont-menu ul{margin:0;padding:0}header .cont-header .cont-menu ul li{display:inline-block;vertical-align:top;margin:0 5px}
