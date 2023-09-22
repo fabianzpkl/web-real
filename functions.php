@@ -11,7 +11,7 @@ add_action('wp_enqueue_scripts', 'cargar_jquery');
 
 function cargar_estilos()
 {
-    wp_enqueue_style('estilos-personalizados', get_template_directory_uri() . 'assets/css/main.css');
+    wp_enqueue_style('estilos-personalizados', get_template_directory_uri() . '/assets/css/main.css');
 }
 add_action('wp_enqueue_scripts', 'cargar_estilos');
 
