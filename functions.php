@@ -6,6 +6,8 @@ function cargar_jquery()
     wp_deregister_script('jquery');
     wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', array(), null, true);
     wp_enqueue_script('materialize', get_template_directory_uri() . '/assets/js/materialize.min.js', array(), null, true);
+    wp_enqueue_script('icons', 'https://kit.fontawesome.com/d70fe1760d.js', array(), null, true);
+    wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.min.js', array(), null, true);
 }
 add_action('wp_enqueue_scripts', 'cargar_jquery');
 
