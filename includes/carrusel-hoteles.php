@@ -66,7 +66,7 @@ $custom_query = new WP_Query($args);
                         $contact_facebook = get_field("facebook");
 
                         if (!empty($contact_facebook)) {
-                            echo '<li><a target="_blank" href="tel:' . esc_attr($contact_facebook) . '"><i class="fa-brands fa-facebook-f"></i></a></a>';
+                            echo '<li><a target="_blank" href="' . esc_attr($contact_facebook) . '"><i class="fa-brands fa-facebook-f"></i></a></a>';
                         }
                         ?>
 
@@ -74,7 +74,15 @@ $custom_query = new WP_Query($args);
                         $contact_instagram = get_field("instagram");
 
                         if (!empty($contact_instagram)) {
-                            echo '<li><a target="_blank" href="tel:' . esc_attr($contact_instagram) . '"><i class="fa-brands fa-instagram"></i></a></a>';
+                            echo '<li><a target="_blank" href="' . esc_attr($contact_instagram) . '"><i class="fa-brands fa-instagram"></i></a></a>';
+                        }
+                        ?>
+
+                        <?php
+                        $contact_twitter_x = get_field("twitter_x");
+
+                        if (!empty($contact_twitter_x)) {
+                            echo '<li><a target="_blank" href="' . esc_attr($contact_twitter_x) . '"><i class="fa-brands fa-x-twitter"></i></a></a>';
                         }
                         ?>
 
@@ -82,7 +90,7 @@ $custom_query = new WP_Query($args);
                         $contact_ubicacion = get_field("ubicacion");
 
                         if (!empty($contact_ubicacion)) {
-                            echo '<li><a target="_blank" href="tel:' . esc_attr($contact_ubicacion) . '"><i class="fa-solid fa-location-dot"></i></a></a>';
+                            echo '<li><a target="_blank" href="' . esc_attr($contact_ubicacion) . '"><i class="fa-solid fa-location-dot"></i></a></a>';
                         }
                         ?>
 
