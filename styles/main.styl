@@ -19,7 +19,6 @@ body
     overflow-x hidden
     font-family 'Roboto', sans-serif
     font-size 16px
-    width 100%
 h1, h2, h3, h4, h5, h6
     font-family 'Montserrat', sans-serif
 select
@@ -33,41 +32,49 @@ header
     background rgba(0, 0, 0, 0.4)
     backdrop-filter blur(13px)
     border-bottom 1px solid color-borde
-    z-index 9
-    .cont-header
-        width calc(100% - 300px)
-        .logo
-            display inline-block
-            vertical-align top 
-            background white
-            padding 15px
-        .cont-menu
-            display inline-block
-            vertical-align top 
-            ul
-                margin 0 0 0 40px
-                padding 0
-                height 100%
-                display block
-                li
-                    display inline-block
-                    vertical-align top
-                    margin 0 10px 
-                    a
-                        color #fff
-                        font-family 'Montserrat', sans-serif
-                        font-size 16px
-                        font-weight 600
-                        padding 27px 0
-                        display block
-                    .sub-menu
-                        display none
+    z-index 11
+    #tootgle_menu_mob
+        background rgba(0, 0, 0, 0.4)
+        backdrop-filter blur(13px)
+        color #fff
+        padding 31px 32px
+        position absolute
+        right 0
+        top 0
+        border none
+        display none
+    .logo
+        display inline-block
+        vertical-align top 
+        background white
+        padding 15px
+    .cont-menu
+        display inline-block
+        vertical-align top 
+        ul
+            margin 0 0 0 40px
+            padding 0
+            height 100%
+            display block
+            li
+                display inline-block
+                vertical-align top
+                margin 0 10px 
+                a
+                    color #fff
+                    font-family 'Montserrat', sans-serif
+                    font-size 16px
+                    font-weight 600
+                    padding 27px 0
+                    display block
+                .sub-menu
+                    display none
 .carrusel-hoteles
     .card-hotel
         width 390px
         border 1px solid color-borde
         display inline-block
-        margin 0 10px
+        margin 0 16px
         img
             width 100%
             height 200px
@@ -128,9 +135,9 @@ header
 #bar-social
     position fixed
     width 70px
-    height calc(100vh - 82px)
+    height calc(100% - 81px)
     left 0
-    bottom 0
+    top 81px
     background rgba(0, 0, 0, 0.4)
     backdrop-filter blur(13px)
     border-right 1px solid color-borde
@@ -173,11 +180,41 @@ header
                 i
                     margin 25px 0 0
 #home_slider
-    width 100vw
-    height 100vh
+    width 100%
+    height 100%
+    .scroll_info
+        position absolute
+        z-index 4
+        bottom 64px
+        left 150px
+        img
+            display inline-block
+            vertical-align top
+            margin 0 16px 0 0
+        p
+            display inline-block
+            vertical-align top
+            color #fff
+            margin 0
+            font-size 14px
+    .video_info
+        position absolute
+        z-index 4
+        bottom 64px
+        right 300px
+        img
+            display inline-block
+            vertical-align top
+            margin 0 16px 0 0
+        p
+            display inline-block
+            vertical-align top
+            color #fff
+            margin 0
+            font-size 14px
     #background-video
-        width 100vw
-        height 100vh
+        width 100%
+        height 100%
         object-fit cover
         position absolute
         left 0
@@ -185,14 +222,103 @@ header
         top 0
         bottom 0
         z-index -1
-    #more-info
+    .more-info
         width 540px
-        height 100vh
+        height calc(100% - 81px)
         position absolute
-        top 0
-        right 0
+        top 81px
+        right -324px
         z-index 10
-        background red
+        background rgba(0, 0, 0, 0.4)
+        backdrop-filter blur(13px)
+        border-left 1px solid color-borde
+        transition all 0.5s
+        .close_bar
+            color color-titulos
+            position absolute
+            top 0
+            right 0
+            z-index 4
+            background color-amarillo
+            padding 26px 33px
+            border none
+            cursor pointer
+        .cont-action
+            width 40%
+            height 100%
+            position absolute
+            left 0
+            top 0
+            z-index 2
+            .actionbar
+                width 100%
+                height 25%
+                padding 32px
+                border none
+                border-bottom 1px solid color-borde
+                border-right 1px solid color-borde
+                font-family 'Montserrat', sans-serif
+                font-size 20px
+                font-weight 600
+                cursor pointer
+                color #fff
+                transition all 0.5s
+                background none
+                box-shadow none
+                text-align center
+                &:hover
+                    background color-amarillo
+                    color color-titulos
+                &:last-child
+                    background #fff
+                    color color-titulos
+                    border-bottom none
+            .active
+                background color-amarillo
+                color color-titulos
+                &:before
+                    width 0
+                    height 0
+                    border-left 10px solid transparent
+                    border-right 10px solid transparent
+                    border-top 10px solid color-amarillo
+                    content ""
+                    position absolute
+                    right -14px
+                    transform rotate(270deg)
+        .cont-more-info
+            width 60%
+            height 100%
+            position absolute
+            top 0
+            right 0
+            z-index 1
+            overflow hidden
+            .slide-more-info
+                width 100%
+                background-size cover !important
+                height calc(100vh - 81px)
+                display inline-block
+                position relative
+                .box-more-info
+                    background rgba(0, 0, 0, 0.4)
+                    backdrop-filter blur(13px)
+                    position absolute
+                    bottom 0
+                    width 100%
+                    left 0
+                    padding 32px
+                    color #fff
+                    label
+                        font-size 14px
+                        font-family 'Montserrat', sans-serif
+                    .btn
+                        width 100%
+                        color #fff
+                        border-color #fff
+                        margin 16px 0 0 
+    .open_menu
+        right 0
 .cont_page
     margin 50px 0
 .dec
@@ -203,3 +329,9 @@ header
     top 0
     background linear-gradient(0deg, rgba(0,0,0,0.7231267507002801) 0%, rgba(0,0,0,0.3393732492997199) 35%, rgba(0,0,0,0) 100%);
     z-index 2
+@media (max-width: 1200px)
+    header
+        .cont-menu
+            display none
+        #tootgle_menu_mob
+            display block
