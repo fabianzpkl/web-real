@@ -22,6 +22,8 @@ get_header(); // Incluye el encabezado
         </button>
         <div class="cont-action">
             <button class="actionbar bar1">
+                <?php the_field('icon_1'); ?>
+
                 <?php the_field('texto_boton_de_activacion_1'); ?>
             </button>
             <button class="actionbar bar2">

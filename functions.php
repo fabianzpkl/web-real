@@ -49,6 +49,7 @@ function registrar_taxonomia_categoria_hoteles()
 }
 add_action('init', 'registrar_taxonomia_categoria_hoteles');
 
+
 // Selector Hoteles
 function mostrar_select_categorias_hoteles()
 {
@@ -61,8 +62,8 @@ function mostrar_select_categorias_hoteles()
     );
 
     if (!empty($terms)) {
-        echo '<select>';
-        echo '<option value="" selected>Todos los hoteles</option>';
+        echo '<select id="filtro_categorias">';
+        echo '<option value="todos" selected>Todos los hoteles</option>';
         foreach ($terms as $term) {
             echo '<option value="' . $term->term_id . '">' . $term->name . '</option>';
             // Llama a una función recursiva para mostrar las categorías secundarias

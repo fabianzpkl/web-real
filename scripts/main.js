@@ -1,3 +1,20 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const filtroCategorias = document.getElementById('filtro_categorias');
+
+    filtroCategorias.addEventListener('change', function () {
+        const categoriaSeleccionada = filtroCategorias.value;
+
+        // Mostrar u ocultar las publicaciones según la categoría seleccionada
+        const hoteles = document.querySelectorAll('.card-hotel ');
+        hoteles.forEach(function (hotel) {
+            if (categoriaSeleccionada === 'todos' || hotel.classList.contains('categoria-' + categoriaSeleccionada)) {
+                hotel.style.display = 'inline-block';
+            } else {
+                hotel.style.display = 'none';
+            }
+        });
+    });
+});
 $(document).ready(function () {
     $(".carrusel-hoteles").slick({
         arrows: false,
@@ -49,3 +66,5 @@ $(document).ready(function () {
         $(this).addClass('active');
     });
 });
+
+
