@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filtroCategorias = document.getElementById('filtro_categorias');
+    const carruselHoteles = $('.carrusel-hoteles');
 
     filtroCategorias.addEventListener('change', function () {
         const categoriaSeleccionada = filtroCategorias.value;
 
         // Mostrar u ocultar las publicaciones según la categoría seleccionada
-        const hoteles = document.querySelectorAll('.card-hotel ');
+        const hoteles = document.querySelectorAll('.card-hotel');
         hoteles.forEach(function (hotel) {
             if (categoriaSeleccionada === 'todos' || hotel.classList.contains('categoria-' + categoriaSeleccionada)) {
                 hotel.style.display = 'inline-block';
@@ -13,6 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 hotel.style.display = 'none';
             }
         });
+
+        if (categoriaSeleccionada === 'todos') {
+        } else {
+            carruselHoteles.slick('slickGoTo', 0);
+        }
     });
 });
 $(document).ready(function () {
