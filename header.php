@@ -54,17 +54,17 @@
         </ul>
         <ul class="link-bottom">
             <li>
-                <a href="#" target="_blank">
+                <a href="<?php echo esc_attr( get_field('linkedin', 'option') ); ?>" target="_blank">
                     <i class="fa-brands fa-linkedin-in"></i>
                 </a>
             </li>
             <li>
-                <a href="#" target="_blank">
+                <a href="<?php echo esc_attr( get_field('facebook', 'option') ); ?>" target="_blank">
                     <i class="fa-brands fa-facebook-f"></i>
                 </a>
             </li>
             <li>
-                <a href="#" target="_blank">
+                <a href="<?php echo esc_attr( get_field('instagram', 'option') ); ?>" target="_blank">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
             </li>
