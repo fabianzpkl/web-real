@@ -17,8 +17,8 @@ color-borde = #9A9A9A
 body, html
     height 100%
 body
-    margin 0
     overflow-x hidden
+    margin 0
     font-family 'Roboto', sans-serif
     font-size 16px
 h1, h2, h3, h4, h5, h6
@@ -36,6 +36,16 @@ header
     border-bottom 1px solid color-borde
     z-index 11
     #tootgle_menu_mob
+        background rgba(0, 0, 0, 0.4)
+        backdrop-filter blur(13px)
+        color #fff
+        padding 31px 32px
+        position absolute
+        right 0
+        top 0
+        border none
+        display none
+    #tootgle_bar_mob
         background rgba(0, 0, 0, 0.4)
         backdrop-filter blur(13px)
         color #fff
@@ -190,6 +200,7 @@ header
 #home_slider
     width 100%
     height 100%
+    display block
     .scroll_info
         position absolute
         z-index 4
@@ -274,6 +285,8 @@ header
                 background none
                 box-shadow none
                 text-align center
+                i
+                    display none
                 &:hover
                     background color-amarillo
                     color color-titulos
@@ -329,6 +342,7 @@ header
         right 0
 .cont_page
     margin 50px 0
+    display block
 .dec
     width 100%
     height 100%
@@ -343,3 +357,30 @@ header
             display none
         #tootgle_menu_mob
             display block
+@media (max-width: 992px)
+    #home_slider
+        .scroll_info
+            display none
+        .video_info
+            left 150px
+            right initial
+        .more-info
+            width 100%
+            right calc(-100% + 79px)
+            .cont-more-info
+                width calc(100% - 80px)
+            .cont-action
+                width 80px
+                .actionbar
+                    i
+                        display block
+                    span
+                        display none
+        .open_menu
+            right 0
+@media (max-width: 700px)
+    #bar-social
+        display none
+    #home_slider
+        .video_info
+            left 20px

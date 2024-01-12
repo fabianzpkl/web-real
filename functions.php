@@ -1,6 +1,4 @@
 <?php
-// Campos personalzizados ACF //
-require_once get_template_directory() . '/acf-config.php';
 //Hoteles shortcode
 function carrusel_hoteles_shortcode()
 {

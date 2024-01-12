@@ -15,7 +15,7 @@ get_header(); // Incluye el encabezado
             echo do_shortcode(wpautop($texto_video));
             ?></p>
     </div>
-    <video id="background-video" autoplay loop muted playsinline>
+    <video id="background-video" autoplay loop muted playsinline preload="none">
         <source src="<?php echo esc_attr(get_field('video_home', 'option')); ?>" type="video/mp4">
     </video>
     <div class="dec"></div>
@@ -26,18 +26,25 @@ get_header(); // Incluye el encabezado
         <div class="cont-action">
             <button class="actionbar bar1">
                 <?php the_field("icon_1"); ?>
-                <?php the_field("texto_boton_de_activacion_1"); ?>
+                <span><?php the_field("texto_boton_de_activacion_1"); ?></span>
             </button>
             <button class="actionbar bar2">
                 <?php the_field("icon_2"); ?>
-                <?php the_field('texto_boton_de_activacion_2'); ?>
+                <span><?php the_field('texto_boton_de_activacion_2'); ?></span>
             </button>
             <button class="actionbar bar3">
                 <?php the_field("icon_3"); ?>
-                <?php the_field('texto_boton_de_activacion_3'); ?>
+                <span>
+                    <?php the_field('texto_boton_de_activacion_3'); ?>
+                </span>
+
             </button>
             <button class="actionbar bar4">
-                Ver todos los hoteles
+                <i class="fa-solid fa-hotel"></i>
+                <span>
+                    Ver todos los hoteles
+                </span>
+
             </button>
         </div>
         <div class="cont-more-info">
