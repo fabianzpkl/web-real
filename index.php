@@ -112,6 +112,8 @@ get_header(); // Incluye el encabezado
     ?>
 </section>
 
+
+
 <?php
 get_footer(); // Incluye el pie de página
 ?>

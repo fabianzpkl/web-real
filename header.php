@@ -67,3 +67,43 @@
             </li>
         </ul>
     </aside>
+
+    <aside class="bar-hotels">
+        <?php
+        $categories = get_categories(array(
+            'taxonomy'   => 'categoria_hoteles', 
+            'hide_empty' => false,
+            'parent'     => 0, 
+        ));
+
+        foreach ($categories as $category) {
+            echo '<h6>' . $category->name . '</h6>';
+
+            $args = array(
+                'post_type'      => 'hoteles',
+                'posts_per_page' => -1,
+                'tax_query'      => array(
+                    array(
+                        'taxonomy' => 'categoria_hoteles',
+                        'field'    => 'slug',
+                        'terms'    => $category->slug,
+                        'include_children' => true, 
+                    ),
+                ),
+            );
+
+            $query = new WP_Query($args);
+
+            if ($query->have_posts()) {
+                echo '<ul>';
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    $enlace_reserva = get_field('link_de_reserva');
+                    echo '<li><a href="' . esc_url($enlace_reserva) . '" target="_blank">' . get_the_title() . '</a></li>';
+                }
+                echo '</ul>';
+                wp_reset_postdata();
+            }
+        }
+        ?>
+    </aside>
