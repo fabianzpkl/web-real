@@ -37,16 +37,16 @@
     <aside id="bar-social">
         <ul class="link-top">
             <li>
-                <a href="#">
+                <button id="toggle-bar-hotel">
                     <i class="fa-solid fa-location-dot"></i>
                     <label for="">Destinos</label>
-                </a>
+                </button>
             </li>
             <li>
-                <a href="#" id="toggle-language">
+                <button id="toggle-language">
                     ES
                     <label for="">Idioma</label>
-                </a>
+                </button>
             </li>
         </ul>
         <ul class="link-bottom">

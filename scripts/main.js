@@ -75,4 +75,8 @@ $(document).ready(function () {
     $(".actionbar").removeClass("active");
     $(this).addClass("active");
   });
+
+  $("#toggle-bar-hotel").click(function() {
+    $(".bar-hotels").toggleClass("bar-hotels-active");
+  });
 });
