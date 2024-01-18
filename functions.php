@@ -1,4 +1,13 @@
 <?php
+//Slider TP2B shortcode
+function slider_tp2b_shortcode()
+{
+    ob_start(); // Inicia el almacenamiento en búfer de salida
+    include get_template_directory() . '/includes/slide-tp2b.php'; // Ruta al archivo de tu template personalizado
+    return ob_get_clean(); // Devuelve el contenido del búfer y lo limpia
+}
+add_shortcode('slider_tp2b', 'slider_tp2b_shortcode');
+
 //Hoteles shortcode
 function carrusel_hoteles_shortcode()
 {
@@ -96,6 +105,48 @@ function mostrar_categorias_hijas($parent_id, $depth)
 }
 
 add_shortcode('select_categorias_hoteles', 'mostrar_select_categorias_hoteles');
+
+
+//Post Type TP2B//
+function registrar_tipo_tp2b()
+{
+    $args = array(
+        'public' => true,
+        // No se mostrará en la página principal
+        'publicly_queryable' => true,
+        // No será consultable públicamente
+        'show_ui' => true,
+        // Mostrar en el área de administración
+        'show_in_menu' => true,
+        // Mostrar en el menú de administración
+        'has_archive' => false,
+        // No tendrá una página de archivo
+        'supports' => array('title'),
+        // Solo tendrá título
+        'labels' => array(
+            'name' => 'TP2B',
+            'singular_name' => 'tp2b',
+        ),
+        'menu_icon' => 'dashicons-buddicons-activity',
+        // Icono para el menú de administración
+    );
+    register_post_type('tp2b', $args);
+}
+add_action('init', 'registrar_tipo_tp2b');
+
+// Registra una taxonomía personalizada llamada "categoria_tp2b"
+function registrar_taxonomia_categoria_tp2b()
+{
+    register_taxonomy(
+        'categoria_tp2b',
+        'tp2b',
+        array(
+            'label' => 'Categoría TP2B',
+            'hierarchical' => true,
+        )
+    );
+}
+add_action('init', 'registrar_taxonomia_categoria_tp2b');
 
 
 // thumbnails Posts
