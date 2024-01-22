@@ -111,9 +111,9 @@ add_shortcode('select_categorias_hoteles', 'mostrar_select_categorias_hoteles');
 function registrar_tipo_tp2b()
 {
     $args = array(
-        'public' => true,
+        'public' => false,
         // No se mostrará en la página principal
-        'publicly_queryable' => true,
+        'publicly_queryable' => false,
         // No será consultable públicamente
         'show_ui' => true,
         // Mostrar en el área de administración
@@ -121,7 +121,7 @@ function registrar_tipo_tp2b()
         // Mostrar en el menú de administración
         'has_archive' => false,
         // No tendrá una página de archivo
-        'supports' => array('title'),
+        'supports' => array('title', 'thumbnail'),
         // Solo tendrá título
         'labels' => array(
             'name' => 'TP2B',

@@ -8,6 +8,13 @@ while (have_posts()) :
 ?>
 
     <div class="thumbnail_page" style="background-image: url('<?php echo get_the_post_thumbnail_url(); ?>'); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+        <div class="container center-align">
+            <div class="cont_title_page">
+                <h1><?php the_title(); ?></h1>
+                <p><?php the_field("texto_introductorio"); ?> </p>
+            </div>
+
+        </div>
     </div>
 
     <section class="cont_page">
