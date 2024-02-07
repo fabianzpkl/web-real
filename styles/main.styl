@@ -84,7 +84,7 @@ header
                     display none
 .carrusel-hoteles
     .card-hotel
-        width 390px
+        width 300px
         border 1px solid color-borde
         display inline-block
         margin 0 16px
@@ -115,7 +115,7 @@ header
             li  
                 display inline-block
                 vertical-align top
-                margin 0 32px 0 0
+                margin 0 16px 0 0
                 a
                     font-size 20px
                     color color-titulos
@@ -400,10 +400,13 @@ header
     width 1200px
     .modal-content
         padding 0
+        overflow-x hidden
         .row
             margin 0
             .col
                 padding 0
+                .cont-tp2n
+                    padding 64px
     .modal-footer
         background none
         color #fff
@@ -414,9 +417,71 @@ header
             height 600px
             width 100%
             object-fit cover
-    .slider-tp2b-nav
+    .hotel-rel
+        border 1px solid color-borde
+        padding 20px
+        margin 10px 0
+        h5
+            margin 0
+            font-size 20px
+        i
+            font-size 30px
+            color color-amarillo
+.cont-tps2b-rows
+    display flex
+    flex-wrap wrap
+    .tp2b-post
+        width: calc(32% - 20px)
+        margin: 0 10px 20px 10px
+        box-sizing border-box
+        border 1px solid color-borde
+        cursor pointer
         img
-            height 76px
+            width 100%
+            height 200px
+            object-fit cover
+        .cont-card-hotel
+            padding 32px
+        label
+            font-family 'Montserrat', sans-serif
+            font-size 14px
+            display -webkit-box
+            -webkit-line-clamp 2
+            -webkit-box-orient vertical
+            overflow hidden 
+            text-overflow ellipsis
+        h6
+            font-size 20px
+            margin 0 0 16px
+            font-weight 600
+            display -webkit-box
+            -webkit-line-clamp 1
+            -webkit-box-orient vertical
+            overflow hidden
+            text-overflow ellipsis
+            height 23px
+        .btn
+            width 100%
+            text-align center
+footer
+    margin 50px 0 0 0
+    background #111820
+    padding 50px 0
+    p
+        color #BCBCBC
+        font-size 12px
+        padding 32px 0 0
+        border-top 1px solid #707070
+    .logo
+        width 100%
+        max-width 200px
+    h6
+        color #fff
+    ul
+        li
+            a
+                font-size 14px 
+                color #BCBCBC
 @media (max-width: 1200px)
     header
         .cont-menu

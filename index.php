@@ -8,13 +8,16 @@ get_header(); // Incluye el encabezado
         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/scroll.svg">
         <p>Más información abajo. <br>Desplázate para ver más.</p>
     </div>
+    <!--
     <div class="video_info">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/gps.svg">
+        <img src="<?php // echo get_template_directory_uri(); ?>/assets/images/gps.svg">
+        
         <p><?php
-            $texto_video = get_field('texto_video', 'option');
-            echo do_shortcode(wpautop($texto_video));
+            //$texto_video = get_field('texto_video', 'option');
+            //echo do_shortcode(wpautop($texto_video));
             ?></p>
-    </div>
+        
+    </div>-->
     <video id="background-video" autoplay loop muted playsinline preload="none">
         <source src="<?php echo esc_attr(get_field('video_home', 'option')); ?>" type="video/mp4">
     </video>

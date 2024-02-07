@@ -9,6 +9,30 @@
 
 </section>
 
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Obtén todos los radios dentro del slider
+  var radios = document.querySelectorAll('#slider input[type="radio"]');
+
+  // Inicializa el índice actual
+  var currentIndex = 0;
+
+  // Configura el intervalo para cambiar los radios cada 5 segundos
+  var interval = setInterval(function () {
+    // Desmarca el radio actual
+    radios[currentIndex].checked = false;
+
+    // Incrementa el índice o vuelve al primero si es el último
+    currentIndex = (currentIndex + 1) % radios.length;
+
+    // Marca el nuevo radio
+    radios[currentIndex].checked = true;
+  }, 5000);
+});
+
+</script>
+
 <style>
 #slider {
   height: 400px;
