@@ -483,78 +483,61 @@ footer
                 font-size 14px 
                 color #BCBCBC
 
-/* ===============================
-   STACKED CARDS – GALERÍA ELEMENTOR
-   =============================== */
+/* Contenedor */
+.stack-carousel .elementor-image-carousel-wrapper {
+  position: relative;
+  padding: 25px 0 35px;
+}
 
-.stacked-cards
+/* Cada slide como tarjeta */
+.stack-carousel .swiper-slide {
+  transition: transform .6s ease, opacity .6s ease, filter .6s ease;
+  transform: scale(.9) rotate(-3deg);
+  opacity: .55;
+  filter: blur(0.2px);
+}
 
-  /* Contenedor principal de la galería */
-  .elementor-image-gallery,
-  &.elementor-widget-image-gallery .gallery
-    position relative
-    height 420px
+/* La tarjeta activa (centro) */
+.stack-carousel .swiper-slide-active {
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+  filter: none;
+  z-index: 5;
+}
 
-  /* Cada tarjeta (figure o gallery-item según versión Elementor) */
-  figure,
-  .gallery-item,
-  .gallery .gallery-item
-    position absolute !important
-    top 0
-    left 50%
-    transform translateX(-50%)
-    width min(340px, 90%)
-    margin 0 !important
-    overflow hidden
-    border-radius 16px
-    box-shadow 0 12px 30px rgba(0,0,0,.18)
-    transition transform .7s ease, opacity .7s ease
+/* Laterales cercanos: como “atrás” */
+.stack-carousel .swiper-slide-prev {
+  transform: scale(.95) rotate(-7deg) translateY(8px);
+  opacity: .8;
+  z-index: 4;
+}
 
-  /* Imagen dentro de la tarjeta */
-  img
-    width 100%
-    height 420px
-    object-fit cover
-    display block
+.stack-carousel .swiper-slide-next {
+  transform: scale(.95) rotate(7deg) translateY(8px);
+  opacity: .8;
+  z-index: 4;
+}
 
-  /* -------- Estados por orden -------- */
+/* Si hay más slides visibles, los alejamos más */
+.stack-carousel .swiper-slide:not(.swiper-slide-active):not(.swiper-slide-prev):not(.swiper-slide-next) {
+  transform: scale(.88) rotate(-10deg) translateY(18px);
+  opacity: .45;
+  z-index: 1;
+}
 
-  /* Tarjeta visible arriba */
-  figure:nth-child(1),
-  .gallery-item:nth-child(1)
-    z-index 6
-    opacity 1
-    transform translateX(-50%) rotate(0deg) translateY(0)
+/* Tarjeta: borde redondeado + sombra */
+.stack-carousel img {
+  border-radius: 16px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.18);
+  display: block;
+}
 
-  /* Segunda tarjeta */
-  figure:nth-child(2),
-  .gallery-item:nth-child(2)
-    z-index 5
-    opacity .95
-    transform translateX(-50%) rotate(-6deg) translateY(12px) scale(.98)
-
-  /* Tercera tarjeta */
-  figure:nth-child(3),
-  .gallery-item:nth-child(3)
-    z-index 4
-    opacity .9
-    transform translateX(-50%) rotate(6deg) translateY(26px) scale(.96)
-
-  /* Oculta las demás */
-  figure:nth-child(n+4),
-  .gallery-item:nth-child(n+4)
-    opacity 0
-    pointer-events none
-
-
-/* ===============================
-   ANIMACIÓN DE SALIDA (JS)
-   =============================== */
-
-.stacked-cards
-  .stack-out
-    transform translateX(-50%) rotate(0deg) translateY(-18px) scale(1.02) !important
-    opacity .6 !important
+/* Ajuste de altura para que se vea compacto */
+.stack-carousel .swiper-slide img {
+  width: 100%;
+  height: 420px;      /* ajusta */
+  object-fit: cover;
+}
 
 
 @media (max-width: 1200px)
