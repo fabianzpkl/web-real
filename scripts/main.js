@@ -149,45 +149,77 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-(function () {
-  function initStackedCards() {
-    document.querySelectorAll(".stacked-cards").forEach((stack) => {
-      if (stack.dataset.stackedInit === "1") return; // evita duplicados
-      const list =
-        stack.querySelector(".elementor-image-gallery") ||
-        stack.querySelector(".gallery");
 
-      if (!list || list.children.length < 2) return;
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  function applyDeckClasses(list) {
+    const cards = Array.from(list.children);
 
-      stack.dataset.stackedInit = "1";
-
-      setInterval(() => {
-        const first = list.children[0];
-        if (!first) return;
-
-        // añade una clase para transición "salida"
-        first.classList.add("stack-out");
-
-        // espera a que se vea la transición y luego lo manda al final
-        setTimeout(() => {
-          first.classList.remove("stack-out");
-          list.appendChild(first);
-        }, 650);
-      }, 2500);
+    cards.forEach(el => {
+      el.classList.remove(
+        "deck-card--top","deck-card--two","deck-card--three","deck-card--four",
+        "deck-card--hidden","deck-card--out"
+      );
     });
+
+    if (cards[0]) cards[0].classList.add("deck-card--top");
+    if (cards[1]) cards[1].classList.add("deck-card--two");
+    if (cards[2]) cards[2].classList.add("deck-card--three");
+    if (cards[3]) cards[3].classList.add("deck-card--four");
+
+    for (let i = 4; i < cards.length; i++) {
+      cards[i].classList.add("deck-card--hidden");
+    }
   }
 
-  // Intenta al cargar
-  document.addEventListener("DOMContentLoaded", initStackedCards);
+  function initDeck(deckRoot) {
+    if (deckRoot.dataset.deckInit === "1") return;
 
-  // Reintenta varias veces por si Elementor renderiza tarde
+    const list =
+      deckRoot.querySelector(".swiper-wrapper") ||
+      deckRoot.querySelector(".slick-track");
+
+    if (!list || list.children.length < 2) return;
+
+    deckRoot.dataset.deckInit = "1";
+    applyDeckClasses(list);
+
+    const interval = setInterval(() => {
+      const first = list.children[0];
+      if (!first) return;
+
+      first.classList.add("deck-card--out");
+
+      setTimeout(() => {
+        first.classList.remove("deck-card--out");
+        list.appendChild(first);      // la manda al final (pasa atrás)
+        applyDeckClasses(list);       // re-apila
+      }, 650);
+
+    }, 2200);
+
+    // opcional: guarda interval por si quieres pararlo luego
+    deckRoot.dataset.deckInterval = interval;
+  }
+
+  function scan() {
+    document.querySelectorAll(".deck-cards").forEach(initDeck);
+  }
+
+  scan();
+
+  // Elementor a veces renderiza tarde, reintenta un poco
   let tries = 0;
-  const timer = setInterval(() => {
-    initStackedCards();
+  const t = setInterval(() => {
+    scan();
     tries++;
-    if (tries > 10) clearInterval(timer);
-  }, 600);
-})();
+    if (tries > 12) clearInterval(t);
+  }, 500);
+});
+</script>
+
+
+
 
 $(document).ready(function () {
   $(".carrusel-hoteles").slick({
