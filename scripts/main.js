@@ -149,19 +149,45 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".stacked-cards").forEach((stack) => {
-    const list =
-      stack.querySelector(".elementor-image-gallery") ||
-      stack.querySelector(".gallery");
-    if (!list) return;
+(function () {
+  function initStackedCards() {
+    document.querySelectorAll(".stacked-cards").forEach((stack) => {
+      if (stack.dataset.stackedInit === "1") return; // evita duplicados
+      const list =
+        stack.querySelector(".elementor-image-gallery") ||
+        stack.querySelector(".gallery");
 
-    setInterval(() => {
-      const first = list.children[0];
-      if (first) list.appendChild(first);
-    }, 2500);
-  });
-});
+      if (!list || list.children.length < 2) return;
+
+      stack.dataset.stackedInit = "1";
+
+      setInterval(() => {
+        const first = list.children[0];
+        if (!first) return;
+
+        // añade una clase para transición "salida"
+        first.classList.add("stack-out");
+
+        // espera a que se vea la transición y luego lo manda al final
+        setTimeout(() => {
+          first.classList.remove("stack-out");
+          list.appendChild(first);
+        }, 650);
+      }, 2500);
+    });
+  }
+
+  // Intenta al cargar
+  document.addEventListener("DOMContentLoaded", initStackedCards);
+
+  // Reintenta varias veces por si Elementor renderiza tarde
+  let tries = 0;
+  const timer = setInterval(() => {
+    initStackedCards();
+    tries++;
+    if (tries > 10) clearInterval(timer);
+  }, 600);
+})();
 
 $(document).ready(function () {
   $(".carrusel-hoteles").slick({
