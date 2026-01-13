@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
         deck.appendChild(first); // la primera pasa al final: efecto naipes
         applyClasses(deck);
       }, 650);
-    }, 2200);
+    }, 5000);
   }
 
   function init() {
