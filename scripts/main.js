@@ -149,11 +149,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.querySelectorAll(".stacked-cards").forEach((stack) => {
-  setInterval(() => {
-    const first = stack.children[0];
-    stack.appendChild(first);
-  }, 3000);
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".stacked-cards").forEach((stack) => {
+    const list =
+      stack.querySelector(".elementor-image-gallery") ||
+      stack.querySelector(".gallery");
+    if (!list) return;
+
+    setInterval(() => {
+      const first = list.children[0];
+      if (first) list.appendChild(first);
+    }, 2500);
+  });
 });
 
 $(document).ready(function () {
