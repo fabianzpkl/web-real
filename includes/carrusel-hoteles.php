@@ -1,124 +1,126 @@
 <div class="filter-hotels">
-    <span>Quiero ver</span>
-    <?php echo do_shortcode('[select_categorias_hoteles]'); ?>
+  <span>Quiero ver</span>
+  <?php echo do_shortcode('[select_categorias_hoteles]'); ?>
 </div>
+
 <?php
-$args = array(
-    'post_type' => 'hoteles',
-    'posts_per_page' => -1,
-    'orderby' => 'rand',
-);
+// 1) Trae SOLO IDs (rápido)
+$ids = get_posts([
+  'post_type'      => 'hoteles',
+  'posts_per_page' => -1,
+  'fields'         => 'ids',
+  'no_found_rows'  => true,
+  'cache_results'  => false,
+]);
+
+// 2) Random en PHP
+if (!empty($ids)) {
+  shuffle($ids);
+}
+
+$args = [
+  'post_type'      => 'hoteles',
+  'posts_per_page' => -1,
+  'post__in'       => $ids,
+  'orderby'        => 'post__in', // respeta el orden del array (ya random)
+];
 
 $custom_query = new WP_Query($args);
 ?>
+
 <div class="carrusel-hoteles">
-    <?php
-    // Comenzamos el bucle
-    if ($custom_query->have_posts()):
-        while ($custom_query->have_posts()):
-            $custom_query->the_post();
+  <?php if ($custom_query->have_posts()): ?>
+    <?php while ($custom_query->have_posts()): $custom_query->the_post(); ?>
 
-            // Obtenemos las categorías del post
-            $categories = get_the_terms(get_the_ID(), 'categoria_hoteles');
+      <?php
+      $terms = get_the_terms(get_the_ID(), 'categoria_hoteles');
 
-            // Inicializamos una variable para la clase de categoría
-            $clase_categoria = '';
+      $class_list = [];
+      $term_names = [];
 
-            if ($categories && !is_wp_error($categories)) {
-                $category_ids = array();
+      if ($terms && !is_wp_error($terms)) {
+        foreach ($terms as $t) {
+          $class_list[] = 'categoria-' . (int) $t->term_id;
+          $term_names[] = trim($t->name);
+        }
+      }
 
-                foreach ($categories as $category) {
-                    $category_ids[] = 'categoria-' . $category->term_id; // Agregamos "categoria-ID" a la lista de clases
-                }
+      $clase_categoria = implode(' ', $class_list);
 
-                $clase_categoria = implode(' ', $category_ids);
-            }
-            ?>
-            <div class="card-hotel <?php echo esc_attr($clase_categoria); ?>">
-                <?php
-                // Obtiene la URL de la imagen destacada en el tamaño "medium"
-                $medium_thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+      $thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+      if (!$thumb) {
+        $thumb = get_template_directory_uri() . '/assets/images/default-hotel.jpg';
+      }
 
-                // Verifica si la imagen destacada en tamaño "medium" existe
-                if ($medium_thumbnail_url) {
-                    // Si existe, muestra la imagen destacada en tamaño "medium"
-                    echo '<img src="' . esc_url($medium_thumbnail_url) . '" alt="' . esc_attr(get_the_title()) . '">';
-                } else {
-                    // Si no existe, muestra una imagen predeterminada
-                    echo '<img src="' . esc_url(get_template_directory_uri() . '/assets/images/default-hotel.jpg') . '" alt="' . esc_attr(get_the_title()) . '">';
-                }
-                ?>
-                <div class="cont-card-hotel">
-                    <label>
-                        <?php
-                        // Obtenemos las categorías del post
-                        $categories = get_the_terms(get_the_ID(), 'categoria_hoteles');
+      // Campos ACF
+      $telefono   = get_field('telefono');
+      $facebook   = get_field('facebook');
+      $instagram  = get_field('instagram');
+      $twitter_x  = get_field('twitter_x');
+      $ubicacion  = get_field('ubicacion');
+      $reserva    = get_field('link_de_reserva');
+      ?>
 
-                        if ($categories && !is_wp_error($categories)) {
-                            $category_names = array();
+      <div class="card-hotel <?php echo esc_attr($clase_categoria); ?>">
+        <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
 
-                            foreach ($categories as $category) {
-                                $category_names[] = trim($category->name); // Elimina espacios en blanco al inicio o al final
-                            }
+        <div class="cont-card-hotel">
+          <label><?php echo !empty($term_names) ? esc_html(implode(', ', $term_names)) : ''; ?></label>
 
-                            echo implode(', ', $category_names); // Mostramos las categorías separadas por comas
-                        }
-                        ?>
-                    </label>
-                    <h6>
-                        <?php the_title(); ?>
-                    </h6>
-                    <ul>
-                        <?php
-                        $contact_telefono = get_field("telefono");
+          <h6><?php the_title(); ?></h6>
 
-                        if (!empty($contact_telefono)) {
-                            echo '<li><a target="_blank" href="tel:' . esc_attr($contact_telefono) . '"><i class="fa-solid fa-phone"></i></a></a>';
-                        }
-                        ?>
+          <ul>
+            <?php if (!empty($telefono)): ?>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="tel:<?php echo esc_attr($telefono); ?>">
+                  <i class="fa-solid fa-phone"></i>
+                </a>
+              </li>
+            <?php endif; ?>
 
-                        <?php
-                        $contact_facebook = get_field("facebook");
+            <?php if (!empty($facebook)): ?>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($facebook); ?>">
+                  <i class="fa-brands fa-facebook-f"></i>
+                </a>
+              </li>
+            <?php endif; ?>
 
-                        if (!empty($contact_facebook)) {
-                            echo '<li><a target="_blank" href="' . esc_attr($contact_facebook) . '"><i class="fa-brands fa-facebook-f"></i></a></a>';
-                        }
-                        ?>
+            <?php if (!empty($instagram)): ?>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($instagram); ?>">
+                  <i class="fa-brands fa-instagram"></i>
+                </a>
+              </li>
+            <?php endif; ?>
 
-                        <?php
-                        $contact_instagram = get_field("instagram");
+            <?php if (!empty($twitter_x)): ?>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($twitter_x); ?>">
+                  <i class="fa-brands fa-x-twitter"></i>
+                </a>
+              </li>
+            <?php endif; ?>
 
-                        if (!empty($contact_instagram)) {
-                            echo '<li><a target="_blank" href="' . esc_attr($contact_instagram) . '"><i class="fa-brands fa-instagram"></i></a></a>';
-                        }
-                        ?>
+            <?php if (!empty($ubicacion)): ?>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($ubicacion); ?>">
+                  <i class="fa-solid fa-location-dot"></i>
+                </a>
+              </li>
+            <?php endif; ?>
+          </ul>
 
-                        <?php
-                        $contact_twitter_x = get_field("twitter_x");
+          <?php if (!empty($reserva)): ?>
+            <a class="btn" href="<?php echo esc_url($reserva); ?>" target="_blank" rel="noopener noreferrer">
+              Reservar Ahora
+            </a>
+          <?php endif; ?>
+        </div>
+      </div>
 
-                        if (!empty($contact_twitter_x)) {
-                            echo '<li><a target="_blank" href="' . esc_attr($contact_twitter_x) . '"><i class="fa-brands fa-x-twitter"></i></a></a>';
-                        }
-                        ?>
-
-                        <?php
-                        $contact_ubicacion = get_field("ubicacion");
-
-                        if (!empty($contact_ubicacion)) {
-                            echo '<li><a target="_blank" href="' . esc_attr($contact_ubicacion) . '"><i class="fa-solid fa-location-dot"></i></a></a>';
-                        }
-                        ?>
-
-                    </ul>
-                    <a class="btn" href="<?php echo esc_attr(get_field('link_de_reserva')); ?>" target="_blank">Reservar
-                        Ahora</a>
-                </div>
-            </div>
-            <?php
-        endwhile;
-        wp_reset_postdata(); // Restauramos los datos originales
-    else:
-        echo 'No se encontraron hoteles.';
-    endif;
-    ?>
+    <?php endwhile; wp_reset_postdata(); ?>
+  <?php else: ?>
+    No se encontraron hoteles.
+  <?php endif; ?>
 </div>
