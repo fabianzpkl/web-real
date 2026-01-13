@@ -149,77 +149,106 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-<script>
 document.addEventListener("DOMContentLoaded", () => {
-  function applyDeckClasses(list) {
-    const cards = Array.from(list.children);
+  function extractImageSources(root) {
+    // Busca imágenes dentro del widget (carrusel o galería)
+    const imgs = root.querySelectorAll("img");
+    const srcs = [];
 
-    cards.forEach(el => {
-      el.classList.remove(
-        "deck-card--top","deck-card--two","deck-card--three","deck-card--four",
-        "deck-card--hidden","deck-card--out"
-      );
+    imgs.forEach((img) => {
+      const src = img.currentSrc || img.getAttribute("src");
+      if (!src) return;
+      // Evita duplicados típicos (srcset / clones)
+      if (!srcs.includes(src)) srcs.push(src);
     });
 
-    if (cards[0]) cards[0].classList.add("deck-card--top");
-    if (cards[1]) cards[1].classList.add("deck-card--two");
-    if (cards[2]) cards[2].classList.add("deck-card--three");
-    if (cards[3]) cards[3].classList.add("deck-card--four");
-
-    for (let i = 4; i < cards.length; i++) {
-      cards[i].classList.add("deck-card--hidden");
-    }
+    return srcs;
   }
 
-  function initDeck(deckRoot) {
-    if (deckRoot.dataset.deckInit === "1") return;
+  function buildDeck(root, srcs) {
+    // Si ya lo creamos, no lo duplicamos
+    if (root.querySelector(":scope > .deck-cards")) return;
 
-    const list =
-      deckRoot.querySelector(".swiper-wrapper") ||
-      deckRoot.querySelector(".slick-track");
+    const deck = document.createElement("div");
+    deck.className = "deck-cards";
 
-    if (!list || list.children.length < 2) return;
+    srcs.forEach((src, idx) => {
+      const card = document.createElement("div");
+      card.className = "deck-card";
+      card.dataset.index = idx;
 
-    deckRoot.dataset.deckInit = "1";
-    applyDeckClasses(list);
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
 
-    const interval = setInterval(() => {
-      const first = list.children[0];
+      card.appendChild(img);
+      deck.appendChild(card);
+    });
+
+    root.appendChild(deck);
+    return deck;
+  }
+
+  function applyClasses(deck) {
+    const cards = Array.from(deck.querySelectorAll(".deck-card"));
+    cards.forEach((c) =>
+      c.classList.remove("is-1", "is-2", "is-3", "is-4", "is-hidden", "is-out")
+    );
+
+    if (cards[0]) cards[0].classList.add("is-1");
+    if (cards[1]) cards[1].classList.add("is-2");
+    if (cards[2]) cards[2].classList.add("is-3");
+    if (cards[3]) cards[3].classList.add("is-4");
+
+    for (let i = 4; i < cards.length; i++) cards[i].classList.add("is-hidden");
+  }
+
+  function animateDeck(deck) {
+    if (deck.dataset.running === "1") return;
+    deck.dataset.running = "1";
+
+    applyClasses(deck);
+
+    setInterval(() => {
+      const first = deck.querySelector(".deck-card");
       if (!first) return;
 
-      first.classList.add("deck-card--out");
+      first.classList.add("is-out");
 
       setTimeout(() => {
-        first.classList.remove("deck-card--out");
-        list.appendChild(first);      // la manda al final (pasa atrás)
-        applyDeckClasses(list);       // re-apila
+        first.classList.remove("is-out");
+        deck.appendChild(first); // la primera pasa al final: efecto naipes
+        applyClasses(deck);
       }, 650);
-
     }, 2200);
-
-    // opcional: guarda interval por si quieres pararlo luego
-    deckRoot.dataset.deckInterval = interval;
   }
 
-  function scan() {
-    document.querySelectorAll(".deck-cards").forEach(initDeck);
+  function init() {
+    document.querySelectorAll(".deck-source").forEach((root) => {
+      if (root.dataset.deckInit === "1") return;
+
+      const srcs = extractImageSources(root);
+      if (!srcs || srcs.length < 2) return; // si aún no cargó Elementor, reintentamos
+
+      const deck = buildDeck(root, srcs);
+      if (!deck) return;
+
+      root.dataset.deckInit = "1";
+      animateDeck(deck);
+    });
   }
 
-  scan();
+  // Primer intento
+  init();
 
-  // Elementor a veces renderiza tarde, reintenta un poco
+  // Elementor a veces “pinta” tarde: reintenta varias veces
   let tries = 0;
   const t = setInterval(() => {
-    scan();
+    init();
     tries++;
-    if (tries > 12) clearInterval(t);
-  }, 500);
+    if (tries > 20) clearInterval(t);
+  }, 400);
 });
-</script>
-
-
-
 
 $(document).ready(function () {
   $(".carrusel-hoteles").slick({

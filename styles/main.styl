@@ -483,82 +483,56 @@ footer
                 font-size 14px 
                 color #BCBCBC
 
-/* ===== DECK (naipes) ===== */
-.deck-cards .elementor-image-carousel-wrapper {
+/* Oculta el widget fuente (pero sigue existiendo en el DOM) */
+.deck-source {
   position: relative;
-  height: 420px;         /* alto del mazo */
-  width: min(360px, 92%);/* ancho del mazo */
+}
+
+/* ocultamos visualmente el carrusel completo */
+.deck-source .elementor-image-carousel-wrapper,
+.deck-source .elementor-image-gallery,
+.deck-source .gallery {
+  display: none !important;
+}
+
+/* Contenedor del mazo que vamos a crear */
+.deck-cards {
+  position: relative;
+  width: min(360px, 92%);
+  height: 440px;
   margin: 0 auto;
 }
 
-/* Apagamos el comportamiento de carrusel visual */
-.deck-cards .swiper-wrapper,
-.deck-cards .slick-track {
-  transform: none !important;
-  transition: none !important;
-}
-
-/* Todas las slides se vuelven "tarjetas" absolutas */
-.deck-cards .swiper-slide,
-.deck-cards .slick-slide {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100%;
-  margin: 0 !important;
-  display: block !important;
-
+/* Cada carta */
+.deck-cards .deck-card {
+  position: absolute;
+  inset: 0;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 16px 40px rgba(0,0,0,.22);
-
+  transform-origin: 50% 80%;
   transition: transform .65s ease, opacity .65s ease;
   will-change: transform, opacity;
 }
 
-/* Imagen full */
-.deck-cards img {
+.deck-cards .deck-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* Estado apilado por orden (primeras 4 visibles) */
-.deck-cards .deck-card--top {
-  z-index: 5;
-  transform: translateY(0) rotate(0deg) scale(1);
-  opacity: 1;
-}
+/* Apilado (solo mostramos 4) */
+.deck-cards .is-1 { z-index: 6; transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+.deck-cards .is-2 { z-index: 5; transform: translateY(10px) rotate(-6deg) scale(.98); opacity: .95; }
+.deck-cards .is-3 { z-index: 4; transform: translateY(22px) rotate(6deg) scale(.96); opacity: .9; }
+.deck-cards .is-4 { z-index: 3; transform: translateY(34px) rotate(-10deg) scale(.94); opacity: .75; }
 
-.deck-cards .deck-card--two {
-  z-index: 4;
-  transform: translateY(10px) rotate(-6deg) scale(.98);
-  opacity: .95;
-}
-
-.deck-cards .deck-card--three {
-  z-index: 3;
-  transform: translateY(22px) rotate(6deg) scale(.96);
-  opacity: .9;
-}
-
-.deck-cards .deck-card--four {
-  z-index: 2;
-  transform: translateY(34px) rotate(-10deg) scale(.94);
-  opacity: .75;
-}
-
-/* Las demás ocultas */
-.deck-cards .deck-card--hidden {
-  opacity: 0;
-  pointer-events: none;
-}
+.deck-cards .is-hidden { opacity: 0; pointer-events: none; }
 
 /* Animación cuando la de arriba “sale” */
-.deck-cards .deck-card--out {
-  transform: translateY(-22px) rotate(12deg) scale(1.02) !important;
+.deck-cards .is-out {
+  transform: translateX(60px) translateY(-18px) rotate(18deg) scale(1.02) !important;
   opacity: .65 !important;
 }
 
