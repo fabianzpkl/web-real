@@ -179,3 +179,19 @@ register_nav_menus(
     )
 );
 
+// Permitir subida de SVG
+add_filter('upload_mimes', function ($mimes) {
+  $mimes['svg'] = 'image/svg+xml';
+  return $mimes;
+});
+
+// Corregir error de tipo MIME en WP 5.5+
+add_filter('wp_check_filetype_and_ext', function ($data, $file, $filename, $mimes) {
+  $filetype = wp_check_filetype($filename, $mimes);
+
+  return [
+    'ext'             => $filetype['ext'],
+    'type'            => $filetype['type'],
+    'proper_filename' => $data['proper_filename']
+  ];
+}, 10, 4);
