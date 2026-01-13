@@ -482,6 +482,34 @@ footer
             a
                 font-size 14px 
                 color #BCBCBC
+.stacked-cards {
+  position: relative;
+  height: 420px;
+}
+
+.stacked-cards .gallery-item {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  transition: transform 0.8s ease, z-index 0.8s;
+}
+
+.stacked-cards .gallery-item:nth-child(1) {
+  z-index: 3;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.stacked-cards .gallery-item:nth-child(2) {
+  z-index: 2;
+  transform: translateX(-50%) rotate(-6deg) translateY(10px);
+}
+
+.stacked-cards .gallery-item:nth-child(3) {
+  z-index: 1;
+  transform: translateX(-50%) rotate(6deg) translateY(20px);
+}
 @media (max-width: 1200px)
     header
         .cont-menu

@@ -149,6 +149,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+document.querySelectorAll(".stacked-cards").forEach((stack) => {
+  setInterval(() => {
+    const first = stack.children[0];
+    stack.appendChild(first);
+  }, 3000);
+});
+
 $(document).ready(function () {
   $(".carrusel-hoteles").slick({
     arrows: false,
