@@ -18,7 +18,7 @@
       <?php foreach ($paises as $pais): ?>
         <button
           type="button"
-          class="tag-hotel"
+          class="tag-hotel btn"
           data-filter="categoria-<?php echo (int) $pais->term_id; ?>"
         >
           <?php echo esc_html($pais->name); ?>
