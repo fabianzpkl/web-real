@@ -261,7 +261,6 @@ $(document).ready(function () {
     pauseOnFocus: true,
     pauseOnHover: true,
     variableWidth: true,
-    centeredSlides: true,
     swipe: true,
     breakpoints: {
       0: { slidesPerView: 1 },
