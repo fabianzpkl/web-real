@@ -1,6 +1,33 @@
 <div class="filter-hotels">
   <span>Quiero ver</span>
-  <?php echo do_shortcode('[select_categorias_hoteles]'); ?>
+
+  <?php
+  // Traer términos (países) de la taxonomía categoria_hoteles
+  $paises = get_terms([
+    'taxonomy'   => 'categoria_hoteles',
+    'hide_empty' => true, // solo los que tienen hoteles
+    'orderby'    => 'name',
+    'order'      => 'ASC',
+  ]);
+  ?>
+
+  <div class="filter-tags-hotels" role="tablist" aria-label="Filtrar hoteles por país">
+    <button type="button" class="tag-hotel is-active" data-filter="all">
+      Ver todos
+    </button>
+
+    <?php if (!empty($paises) && !is_wp_error($paises)): ?>
+      <?php foreach ($paises as $pais): ?>
+        <button
+          type="button"
+          class="tag-hotel"
+          data-filter="categoria-<?php echo (int) $pais->term_id; ?>"
+        >
+          <?php echo esc_html($pais->name); ?>
+        </button>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </div>
 </div>
 
 <?php
