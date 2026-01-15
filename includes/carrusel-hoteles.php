@@ -1,6 +1,4 @@
 <div class="filter-hotels">
-  <span>Quiero ver</span>
-
   <?php
   // Traer términos (países) de la taxonomía categoria_hoteles
   $paises = get_terms([
@@ -151,3 +149,39 @@ $custom_query = new WP_Query($args);
     No se encontraron hoteles.
   <?php endif; ?>
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const wrap = document.querySelector('.carrusel-hoteles');
+  const buttons = document.querySelectorAll('.filter-tags-hotels .tag-hotel');
+
+  if (!wrap || !buttons.length) return;
+
+  const cards = wrap.querySelectorAll('.card-hotel');
+
+  function setActive(btn) {
+    buttons.forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+  }
+
+  function filterCards(filter) {
+    cards.forEach(card => {
+      if (filter === 'all') {
+        card.style.display = '';
+        return;
+      }
+      card.style.display = card.classList.contains(filter) ? '' : 'none';
+    });
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.getAttribute('data-filter');
+      setActive(btn);
+      filterCards(filter);
+    });
+  });
+});
+</script>
+
