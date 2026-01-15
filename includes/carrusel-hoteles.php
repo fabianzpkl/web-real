@@ -10,7 +10,7 @@
   ?>
 
   <div class="filter-tags-hotels" role="tablist" aria-label="Filtrar hoteles por país">
-    <button type="button btn" class="tag-hotel is-active" data-filter="all">
+    <button type="button " class="tag-hotel is-active btn" data-filter="all">
       Ver todos
     </button>
 
