@@ -261,7 +261,13 @@ $(document).ready(function () {
     pauseOnFocus: true,
     pauseOnHover: true,
     variableWidth: true,
+    centeredSlides: true,
     swipe: true,
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
   });
   $(".cont-more-info").slick({
     infinite: false,
