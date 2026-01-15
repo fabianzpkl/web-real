@@ -42,12 +42,12 @@
                     <label for="">Destinos</label>
                 </button>
             </li>
-            <li>
+            <!--<li>
                 <button id="toggle-language">
                     ES
                     <label for="">Idioma</label>
                 </button>
-            </li>
+            </li>-->
         </ul>
         <ul class="link-bottom">
             <li>
