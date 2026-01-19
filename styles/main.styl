@@ -119,16 +119,9 @@ header
                 a
                     font-size 20px
                     color color-titulos
-.filter-hotels
-    margin 0 0 40px
-    span
-        font-family 'Montserrat', sans-serif
-        font-size 20px
-        font-weight 600
-        display inline-block
-        vertical-align middle
-        margin 0 16px 0 0 
-    select
+.filter-select-hotels
+    display: none
+    .filter-hotels
         width 300px
         font-family 'Montserrat', sans-serif
         font-size 20px
@@ -140,6 +133,8 @@ header
     text-align center
     .btn 
         margin 8px
+        &:hover
+            border 1px solid color-borde
     .is-active
         background color-amarillo
         box-shadow none
@@ -579,6 +574,8 @@ footer
         .open_menu
             right 0
 @media (max-width: 700px)
+    .filter-select-hotels
+        display block
     #bar-social
         display none
     #home_slider

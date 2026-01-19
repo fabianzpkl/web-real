@@ -30,8 +30,7 @@
 
   <!-- SELECT (MOBILE) -->
   <div class="filter-select-hotels">
-    <label class="sr-only" for="filterHotelsSelect">Filtrar hoteles por país</label>
-    <select id="filterHotelsSelect" class="select-hotel btn">
+    <select id="filterHotelsSelect" class="filter-hotels btn">
       <option value="all">Ver todos</option>
 
       <?php if (!empty($paises) && !is_wp_error($paises)): ?>
