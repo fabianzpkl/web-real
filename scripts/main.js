@@ -264,7 +264,7 @@ $(document).ready(function () {
     swipe: true,
     breakpoints: {
       0: { slidesPerView: 1 },
-      768: { slidesPerView: 2 },
+      768: { slidesPerView: 1 },
       1024: { slidesPerView: 3 },
     },
   });
