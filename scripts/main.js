@@ -251,30 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 $(document).ready(function () {
-  function initHotelsSlick($el) {
-    $el.slick({
-      arrows: true,
-      dots: false,
-      infinite: false,
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      autoplay: true,
-      pauseOnFocus: true,
-      pauseOnHover: true,
-      variableWidth: true,
-      swipe: true,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: { slidesToShow: 2 },
-        },
-        {
-          breakpoint: 768,
-          settings: { slidesToShow: 1 },
-        },
-      ],
-    });
-  }
   $(".cont-more-info").slick({
     infinite: false,
     arrows: false,

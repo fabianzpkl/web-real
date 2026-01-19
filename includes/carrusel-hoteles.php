@@ -170,13 +170,11 @@ $custom_query = new WP_Query($args);
 <script>
 jQuery(function ($) {
   const $wrap = $('.carrusel-hoteles');
+  const $source = $('.hoteles-source');
   const $buttons = $('.filter-tags-hotels .tag-hotel');
   const $select = $('#filterHotelsSelect');
 
-  if (!$wrap.length) return;
-
-  // Guarda una copia “fuente” (HTML) de todas las cards
-  const allHTML = $wrap.html();
+  if (!$wrap.length || !$source.length) return;
 
   function destroySlick() {
     if ($wrap.hasClass('slick-initialized')) {
@@ -185,44 +183,70 @@ jQuery(function ($) {
   }
 
   function initSlick() {
-    initHotelsSlick($wrap);
-
-    // Asegura recalculo de posiciones (especialmente con variableWidth)
-    $wrap.slick('setPosition');
+    // Usa tu función global del main.js
+    if (typeof window.initHotelsSlick === 'function') {
+      window.initHotelsSlick($wrap);
+      $wrap.slick('setPosition');
+    } else if (typeof initHotelsSlick === 'function') {
+      initHotelsSlick($wrap);
+      $wrap.slick('setPosition');
+    } else {
+      // fallback (por si no existiera)
+      $wrap.slick({
+        arrows: true,
+        dots: false,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        pauseOnFocus: true,
+        pauseOnHover: true,
+        variableWidth: true,
+        swipe: true,
+        responsive: [
+          { breakpoint: 1024, settings: { slidesToShow: 2 } },
+          { breakpoint: 768, settings: { slidesToShow: 1 } }
+        ]
+      });
+    }
   }
 
   function setActiveByFilter(filter) {
     $buttons.removeClass('is-active');
-    const $match = $buttons.filter(`[data-filter="${filter}"]`);
-    if ($match.length) $match.addClass('is-active');
+    $buttons.filter(`[data-filter="${filter}"]`).addClass('is-active');
   }
 
-  function rebuildByFilter(filter) {
-    // 1) destruir slick antes de tocar DOM
+  function build(filter) {
+    // 1) destruir slick
     destroySlick();
 
-    // 2) restaurar todos
-    $wrap.html(allHTML);
+    // 2) vaciar carrusel visible
+    $wrap.empty();
 
-    // 3) eliminar los que no aplican (NO ocultar)
-    if (filter !== 'all') {
-      $wrap.find('.card-hotel').not('.' + filter).remove();
-    }
+    // 3) clonar desde fuente (siempre limpio)
+    const $all = $source.find('.card-hotel').clone(true, true);
 
-    // 4) volver a iniciar slick
+    // 4) filtrar (remover del DOM, NO ocultar)
+    const $filtered = (filter === 'all')
+      ? $all
+      : $all.filter('.' + filter);
+
+    // 5) pintar
+    $wrap.append($filtered);
+
+    // 6) reiniciar slick
     initSlick();
   }
 
-  // Init slick al cargar (con todos)
-  initSlick();
+  // Inicial
+  build('all');
 
   // Botones
   $buttons.on('click', function () {
     const filter = $(this).data('filter');
     setActiveByFilter(filter);
-    rebuildByFilter(filter);
-
     if ($select.length) $select.val(filter);
+    build(filter);
   });
 
   // Select
@@ -230,7 +254,7 @@ jQuery(function ($) {
     $select.on('change', function () {
       const filter = $(this).val();
       setActiveByFilter(filter);
-      rebuildByFilter(filter);
+      build(filter);
     });
   }
 });
