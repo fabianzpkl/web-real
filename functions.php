@@ -1,229 +1,198 @@
 <?php
-//Slider TP2B shortcode
-function slider_tp2b_shortcode()
-{
-    ob_start(); // Inicia el almacenamiento en búfer de salida
-    include get_template_directory() . '/includes/slide-tp2b.php'; // Ruta al archivo de tu template personalizado
-    return ob_get_clean(); // Devuelve el contenido del búfer y lo limpia
+
+// -----------------------------
+// Shortcodes
+// -----------------------------
+function slider_tp2b_shortcode() {
+  ob_start();
+  include get_template_directory() . '/includes/slide-tp2b.php';
+  return ob_get_clean();
 }
 add_shortcode('slider_tp2b', 'slider_tp2b_shortcode');
 
-//Hoteles shortcode
-function carrusel_hoteles_shortcode()
-{
-    ob_start(); // Inicia el almacenamiento en búfer de salida
-    include get_template_directory() . '/includes/carrusel-hoteles.php'; // Ruta al archivo de tu template personalizado
-    return ob_get_clean(); // Devuelve el contenido del búfer y lo limpia
+function carrusel_hoteles_shortcode() {
+  ob_start();
+  include get_template_directory() . '/includes/carrusel-hoteles.php';
+  return ob_get_clean();
 }
 add_shortcode('carrusel_hoteles', 'carrusel_hoteles_shortcode');
 
-//Post Type Hoteles//
-function registrar_tipo_hoteles()
-{
-    $args = array(
-        'public' => false,
-        // No se mostrará en la página principal
-        'publicly_queryable' => false,
-        // No será consultable públicamente
-        'show_ui' => true,
-        // Mostrar en el área de administración
-        'show_in_menu' => true,
-        // Mostrar en el menú de administración
-        'has_archive' => false,
-        // No tendrá una página de archivo
-        'supports' => array('title', 'thumbnail'),
-        // Solo tendrá título
-        'labels' => array(
-            'name' => 'Hoteles',
-            'singular_name' => 'Hotel',
-        ),
-        'menu_icon' => 'dashicons-building',
-        // Icono para el menú de administración
-    );
-    register_post_type('hoteles', $args);
+
+// -----------------------------
+// CPT: Hoteles + Taxonomía
+// -----------------------------
+function registrar_tipo_hoteles() {
+  $args = array(
+    'public' => false,
+    'publicly_queryable' => false,
+    'show_ui' => true,
+    'show_in_menu' => true,
+    'has_archive' => false,
+    'supports' => array('title', 'thumbnail'),
+    'labels' => array(
+      'name' => 'Hoteles',
+      'singular_name' => 'Hotel',
+    ),
+    'menu_icon' => 'dashicons-building',
+  );
+  register_post_type('hoteles', $args);
 }
 add_action('init', 'registrar_tipo_hoteles');
 
-// Registra una taxonomía personalizada llamada "categoria_hoteles"
-function registrar_taxonomia_categoria_hoteles()
-{
-    register_taxonomy(
-        'categoria_hoteles',
-        'hoteles',
-        array(
-            'label' => 'Países de los hoteles',
-            'hierarchical' => true,
-        )
-    );
+function registrar_taxonomia_categoria_hoteles() {
+  register_taxonomy(
+    'categoria_hoteles',
+    'hoteles',
+    array(
+      'label' => 'Países de los hoteles',
+      'hierarchical' => true,
+      'show_ui' => true,
+      'show_admin_column' => true,
+    )
+  );
 }
 add_action('init', 'registrar_taxonomia_categoria_hoteles');
 
 
-// Selector Hoteles
-function mostrar_select_categorias_hoteles()
-{
-    $terms = get_terms(
-        array(
-            'taxonomy' => 'categoria_hoteles',
-            'hide_empty' => false,
-            'parent' => 0,
-        )
-    );
+// -----------------------------
+// Shortcode: Select categorías hoteles
+// -----------------------------
+function mostrar_categorias_hijas($parent_id, $depth) {
+  $child_terms = get_terms(array(
+    'taxonomy' => 'categoria_hoteles',
+    'hide_empty' => false,
+    'parent' => $parent_id,
+  ));
 
-    if (!empty($terms)) {
-        echo '<select id="filtro_categorias">';
-        echo '<option value="todos" selected>Todos los hoteles</option>';
-        foreach ($terms as $term) {
-            echo '<option value="' . $term->term_id . '">' . $term->name . '</option>';
-            // Llama a una función recursiva para mostrar las categorías secundarias
-            mostrar_categorias_hijas($term->term_id, 1);
-        }
-        echo '</select>';
-    } else {
-        echo 'No se encontraron categorías.';
-    }
+  if (empty($child_terms) || is_wp_error($child_terms)) return;
+
+  foreach ($child_terms as $child_term) {
+    echo '<option value="' . esc_attr($child_term->term_id) . '">';
+    echo str_repeat('&nbsp;&nbsp;', (int)$depth) . esc_html($child_term->name);
+    echo '</option>';
+
+    mostrar_categorias_hijas($child_term->term_id, $depth + 1);
+  }
 }
 
-// Función recursiva para mostrar las categorías secundarias
-function mostrar_categorias_hijas($parent_id, $depth)
-{
-    $child_terms = get_terms(
-        array(
-            'taxonomy' => 'categoria_hoteles',
-            'hide_empty' => false,
-            'parent' => $parent_id,
-        )
-    );
+function mostrar_select_categorias_hoteles() {
+  $terms = get_terms(array(
+    'taxonomy' => 'categoria_hoteles',
+    'hide_empty' => false,
+    'parent' => 0,
+  ));
 
-    foreach ($child_terms as $child_term) {
-        echo '<option value="' . $child_term->term_id . '">';
-        // Agrega un nivel de indentación para las categorías secundarias
-        echo str_repeat('&nbsp;&nbsp;', $depth) . $child_term->name;
-        echo '</option>';
-        mostrar_categorias_hijas($child_term->term_id, $depth + 1);
-    }
+  if (empty($terms) || is_wp_error($terms)) {
+    return 'No se encontraron categorías.';
+  }
+
+  ob_start();
+  echo '<select id="filtro_categorias">';
+  echo '<option value="todos" selected>Todos los hoteles</option>';
+
+  foreach ($terms as $term) {
+    echo '<option value="' . esc_attr($term->term_id) . '">' . esc_html($term->name) . '</option>';
+    mostrar_categorias_hijas($term->term_id, 1);
+  }
+
+  echo '</select>';
+  return ob_get_clean();
 }
-
 add_shortcode('select_categorias_hoteles', 'mostrar_select_categorias_hoteles');
 
 
-//Post Type TP2B//
-function registrar_tipo_tp2b()
-{
-    $args = array(
-        'public' => false,
-        // No se mostrará en la página principal
-        'publicly_queryable' => false,
-        // No será consultable públicamente
-        'show_ui' => true,
-        // Mostrar en el área de administración
-        'show_in_menu' => true,
-        // Mostrar en el menú de administración
-        'has_archive' => false,
-        // No tendrá una página de archivo
-        'supports' => array('title', 'thumbnail'),
-        // Solo tendrá título
-        'labels' => array(
-            'name' => 'TP2B',
-            'singular_name' => 'tp2b',
-        ),
-        'menu_icon' => 'dashicons-buddicons-activity',
-        // Icono para el menú de administración
-    );
-    register_post_type('tp2b', $args);
+// -----------------------------
+// CPT: TP2B + Taxonomía
+// -----------------------------
+function registrar_tipo_tp2b() {
+  $args = array(
+    'public' => false,
+    'publicly_queryable' => false,
+    'show_ui' => true,
+    'show_in_menu' => true,
+    'has_archive' => false,
+    'supports' => array('title', 'thumbnail'),
+    'labels' => array(
+      'name' => 'TP2B',
+      'singular_name' => 'tp2b',
+    ),
+    'menu_icon' => 'dashicons-buddicons-activity',
+  );
+  register_post_type('tp2b', $args);
 }
 add_action('init', 'registrar_tipo_tp2b');
 
-// Registra una taxonomía personalizada llamada "categoria_tp2b"
-function registrar_taxonomia_categoria_tp2b()
-{
-    register_taxonomy(
-        'categoria_tp2b',
-        'tp2b',
-        array(
-            'label' => 'Categoría TP2B',
-            'hierarchical' => true,
-        )
-    );
+function registrar_taxonomia_categoria_tp2b() {
+  register_taxonomy(
+    'categoria_tp2b',
+    'tp2b',
+    array(
+      'label' => 'Categoría TP2B',
+      'hierarchical' => true,
+      'show_ui' => true,
+      'show_admin_column' => true,
+    )
+  );
 }
 add_action('init', 'registrar_taxonomia_categoria_tp2b');
 
 
-// thumbnails Posts
-
+// -----------------------------
+// Theme supports + Menús
+// -----------------------------
 add_theme_support('post-thumbnails');
 
-function cargar_jquery()
-{
-    wp_deregister_script('jquery');
-    wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.0.min.js', array(), null, true);
-    wp_enqueue_script('materialize', get_template_directory_uri() . '/assets/js/materialize.min.js', array(), null, true);
-    wp_enqueue_script('icons', 'https://kit.fontawesome.com/d70fe1760d.js', array(), null, true);
-    wp_enqueue_script('slick', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js', array(), null, true);
-    wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.min.js', array(), null, true);
-}
-add_action('wp_enqueue_scripts', 'cargar_jquery');
+register_nav_menus(array(
+  'primary' => 'Menú principal',
+));
 
 
-function cargar_estilos()
-{
-    wp_enqueue_style('estilos-materialize', get_template_directory_uri() . '/assets/css/materialize.min.css');
-    wp_enqueue_style('estilos-personalizados', get_template_directory_uri() . '/assets/css/main.css');
-}
-add_action('wp_enqueue_scripts', 'cargar_estilos');
-
-
-register_nav_menus(
-    array(
-        'primary' => 'Menú principal',
-    )
-);
-
-// Permitir subida de SVG
+// -----------------------------
+// SVG upload
+// -----------------------------
 add_filter('upload_mimes', function ($mimes) {
   $mimes['svg'] = 'image/svg+xml';
   return $mimes;
 });
 
-// Corregir error de tipo MIME en WP 5.5+
 add_filter('wp_check_filetype_and_ext', function ($data, $file, $filename, $mimes) {
   $filetype = wp_check_filetype($filename, $mimes);
 
-  return [
+  return array(
     'ext'             => $filetype['ext'],
     'type'            => $filetype['type'],
-    'proper_filename' => $data['proper_filename']
-  ];
+    'proper_filename' => $data['proper_filename'],
+  );
 }, 10, 4);
 
 
+// -----------------------------
+// Assets (Scripts + Styles)  ✅ UNA SOLA VEZ, ORDEN CORRECTO
+// -----------------------------
 add_action('wp_enqueue_scripts', function () {
 
-  // jQuery de WordPress
+  // 1) jQuery: usa el que trae WordPress (NO lo desregistres)
   wp_enqueue_script('jquery');
 
-  // Slick (ajusta la ruta a donde tengas slick)
-  wp_enqueue_style(
-    'slick-css',
-    get_template_directory_uri() . '/assets/slick/slick.css',
-    [],
-    '1.8.1'
-  );
+  // 2) CSS
+  wp_enqueue_style('estilos-materialize', get_template_directory_uri() . '/assets/css/materialize.min.css', array(), null);
+  wp_enqueue_style('estilos-personalizados', get_template_directory_uri() . '/assets/css/main.css', array(), null);
 
-  wp_enqueue_script(
-    'slick-js',
-    get_template_directory_uri() . '/assets/slick/slick.min.js',
-    ['jquery'],
-    '1.8.1',
-    true
-  );
+  // Slick CSS (si lo quieres)
+  // Si NO tienes estas rutas, cámbialas por tu ruta real o usa CDN
+  wp_enqueue_style('slick-css', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css', array(), '1.8.1');
+  wp_enqueue_style('slick-theme-css', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css', array('slick-css'), '1.8.1');
 
-  // Tu main.js (debe ir después de slick y jquery)
-  wp_enqueue_script(
-    'theme-main',
-    get_template_directory_uri() . '/assets/js/main.js',
-    ['jquery', 'slick-js'],
-    '1.0.0',
-    true
-  );
+  // 3) JS (en footer)
+  wp_enqueue_script('materialize', get_template_directory_uri() . '/assets/js/materialize.min.js', array('jquery'), null, true);
+
+  // Fontawesome kit (no depende de jQuery)
+  wp_enqueue_script('icons', 'https://kit.fontawesome.com/d70fe1760d.js', array(), null, true);
+
+  // Slick JS (depende de jQuery)
+  wp_enqueue_script('slick', 'https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js', array('jquery'), '1.8.1', true);
+
+  // Tu main (depende de jquery + slick)
+  // IMPORTANTE: usa UNO SOLO (no main.min.js y main.js a la vez)
+  wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.min.js', array('jquery', 'slick'), null, true);
 });
