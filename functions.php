@@ -196,3 +196,59 @@ add_action('wp_enqueue_scripts', function () {
   // IMPORTANTE: usa UNO SOLO (no main.min.js y main.js a la vez)
   wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.min.js', array('jquery', 'slick'), null, true);
 });
+
+
+add_action('widgets_init', function () {
+
+  // Footer columnas
+  register_sidebar([
+    'name'          => 'Footer Columna 1',
+    'id'            => 'footer_col_1',
+    'description'   => 'Primera columna del footer (título y enlaces).',
+    'before_widget' => '<div class="footer-widget footer-widget-1">',
+    'after_widget'  => '</div>',
+    'before_title'  => '<h6>',
+    'after_title'   => '</h6>',
+  ]);
+
+  register_sidebar([
+    'name'          => 'Footer Columna 2',
+    'id'            => 'footer_col_2',
+    'description'   => 'Segunda columna del footer (título y enlaces).',
+    'before_widget' => '<div class="footer-widget footer-widget-2">',
+    'after_widget'  => '</div>',
+    'before_title'  => '<h6>',
+    'after_title'   => '</h6>',
+  ]);
+
+  register_sidebar([
+    'name'          => 'Footer Columna 3',
+    'id'            => 'footer_col_3',
+    'description'   => 'Tercera columna del footer (título y enlaces).',
+    'before_widget' => '<div class="footer-widget footer-widget-3">',
+    'after_widget'  => '</div>',
+    'before_title'  => '<h6>',
+    'after_title'   => '</h6>',
+  ]);
+
+  register_sidebar([
+    'name'          => 'Footer Columna 4',
+    'id'            => 'footer_col_4',
+    'description'   => 'Cuarta columna del footer (título y enlaces).',
+    'before_widget' => '<div class="footer-widget footer-widget-4">',
+    'after_widget'  => '</div>',
+    'before_title'  => '<h6>',
+    'after_title'   => '</h6>',
+  ]);
+
+  // Footer legales
+  register_sidebar([
+    'name'          => 'Footer Legales',
+    'id'            => 'footer_legales',
+    'description'   => 'Texto legal y notas al pie del footer.',
+    'before_widget' => '<div class="footer-legales">',
+    'after_widget'  => '</div>',
+    'before_title'  => '<h6 class="sr-only">',
+    'after_title'   => '</h6>',
+  ]);
+});

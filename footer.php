@@ -1,79 +1,78 @@
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col s3">
-                    <img class="logo" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo-footer.svg" alt="Real - Hotel & Resourts">
-                </div>
-                <div class="col s1">
+<footer>
+  <div class="container">
+    <div class="row">
 
-                </div>
-                <div class="col s8">
-                    <div class="row">
-                        <div class="col s3">
-                            <h6>Título Footer</h6>
-                            <ul>
-                                <li>
-                                    <a href="#">Lorem ipsum dolor.</a>
-                                    <a href="#">Proin sed turpis.</a>
-                                    <a href="#">Etiam auctor nibh.</a>
-                                    <a href="#">Proin cursus eros.</a>
-                                    <a href="#">Lorem ipsum dolor.</a>
-                                    <a href="#">Proin sed turpis.</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col s3">
-                            <h6>Título Footer</h6>
-                            <ul>
-                                <li>
-                                    <a href="#">Lorem ipsum dolor.</a>
-                                    <a href="#">Proin sed turpis.</a>
-                                    <a href="#">Etiam auctor nibh.</a>
-                                    <a href="#">Proin cursus eros.</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col s3">
-                            <h6>Título Footer</h6>
-                            <ul>
-                                <li>
-                                    <a href="#">Lorem ipsum dolor.</a>
-                                    <a href="#">Proin sed turpis.</a>
-                                    <a href="#">Etiam auctor nibh.</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col s3">
-                            <h6>Título Footer</h6>
-                            <ul>
-                                <li>
-                                    <a href="#">Lorem ipsum dolor.</a>
-                                    <a href="#">Proin sed turpis.</a>
-                                    <a href="#">Etiam auctor nibh.</a>
-                                    <a href="#">Proin cursus eros.</a>
-                                    <a href="#">Lorem ipsum dolor.</a>
-                                    <a href="#">Proin sed turpis.</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <h6>Real hotels & resorts. parte del grupo poma:</h6>
-                            <br>
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logos-dummy.png" width="100%" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis rutrum mauris, sit amet gravida nisl mattis a.</p>
-                </div>
-            </div>
-            <div class="container">
-    </footer>
-    <?php wp_footer(); ?>
-    </body>
+      <!-- LOGO -->
+      <div class="col s12 m4 l3 center-align left-align-on-large">
+        <img class="logo" src="<?php echo get_template_directory_uri(); ?>/assets/images/logo-footer.svg" alt="Real - Hotel & Resourts">
+      </div>
 
-    </html>
+      <!-- COLUMNAS -->
+      <div class="col s12 m8 l9">
+        <div class="row">
+
+          <div class="col s12 m6 l3">
+            <?php if (is_active_sidebar('footer_col_1')): ?>
+              <?php dynamic_sidebar('footer_col_1'); ?>
+            <?php else: ?>
+              <h6>Footer Columna 1</h6>
+              <ul><li><a href="#">Agrega widgets en Apariencia → Widgets</a></li></ul>
+            <?php endif; ?>
+          </div>
+
+          <div class="col s12 m6 l3">
+            <?php if (is_active_sidebar('footer_col_2')): ?>
+              <?php dynamic_sidebar('footer_col_2'); ?>
+            <?php else: ?>
+              <h6>Footer Columna 2</h6>
+              <ul><li><a href="#">Agrega widgets en Apariencia → Widgets</a></li></ul>
+            <?php endif; ?>
+          </div>
+
+          <div class="col s12 m6 l3">
+            <?php if (is_active_sidebar('footer_col_3')): ?>
+              <?php dynamic_sidebar('footer_col_3'); ?>
+            <?php else: ?>
+              <h6>Footer Columna 3</h6>
+              <ul><li><a href="#">Agrega widgets en Apariencia → Widgets</a></li></ul>
+            <?php endif; ?>
+          </div>
+
+          <div class="col s12 m6 l3">
+            <?php if (is_active_sidebar('footer_col_4')): ?>
+              <?php dynamic_sidebar('footer_col_4'); ?>
+            <?php else: ?>
+              <h6>Footer Columna 4</h6>
+              <ul><li><a href="#">Agrega widgets en Apariencia → Widgets</a></li></ul>
+            <?php endif; ?>
+          </div>
+
+        </div>
+
+        <!-- BLOQUE LOGOS -->
+        <div class="row">
+          <div class="col s12">
+            <h6>Real hotels & resorts. parte del grupo poma:</h6>
+            <br>
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logos-dummy.png" class="responsive-img" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEGALES -->
+    <div class="row">
+      <div class="col s12 center-align left-align-on-large">
+        <?php if (is_active_sidebar('footer_legales')): ?>
+          <?php dynamic_sidebar('footer_legales'); ?>
+        <?php else: ?>
+          <p>Footer legales: agrega el texto en Apariencia → Widgets → “Footer Legales”.</p>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<?php wp_footer(); ?>
+</body>
+</html>
