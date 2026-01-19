@@ -3,14 +3,15 @@
   // Traer términos (países) de la taxonomía categoria_hoteles
   $paises = get_terms([
     'taxonomy'   => 'categoria_hoteles',
-    'hide_empty' => true, // solo los que tienen hoteles
+    'hide_empty' => true,
     'orderby'    => 'name',
     'order'      => 'ASC',
   ]);
   ?>
 
+  <!-- BOTONES (DESKTOP) -->
   <div class="filter-tags-hotels" role="tablist" aria-label="Filtrar hoteles por país">
-    <button type="button " class="tag-hotel is-active btn" data-filter="all">
+    <button type="button" class="tag-hotel is-active btn" data-filter="all">
       Ver todos
     </button>
 
@@ -26,10 +27,26 @@
       <?php endforeach; ?>
     <?php endif; ?>
   </div>
+
+  <!-- SELECT (MOBILE) -->
+  <div class="filter-select-hotels">
+    <label class="sr-only" for="filterHotelsSelect">Filtrar hoteles por país</label>
+    <select id="filterHotelsSelect" class="select-hotel btn">
+      <option value="all">Ver todos</option>
+
+      <?php if (!empty($paises) && !is_wp_error($paises)): ?>
+        <?php foreach ($paises as $pais): ?>
+          <option value="categoria-<?php echo (int) $pais->term_id; ?>">
+            <?php echo esc_html($pais->name); ?>
+          </option>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </select>
+  </div>
 </div>
 
 <?php
-// 1) Trae SOLO IDs (rápido)
+// 1) Traer SOLO IDs (más rápido)
 $ids = get_posts([
   'post_type'      => 'hoteles',
   'posts_per_page' => -1,
@@ -47,7 +64,7 @@ $args = [
   'post_type'      => 'hoteles',
   'posts_per_page' => -1,
   'post__in'       => $ids,
-  'orderby'        => 'post__in', // respeta el orden del array (ya random)
+  'orderby'        => 'post__in',
 ];
 
 $custom_query = new WP_Query($args);
@@ -97,7 +114,7 @@ $custom_query = new WP_Query($args);
           <ul>
             <?php if (!empty($telefono)): ?>
               <li>
-                <a target="_blank" rel="noopener noreferrer" href="tel:<?php echo esc_attr($telefono); ?>">
+                <a href="tel:<?php echo esc_attr($telefono); ?>" target="_blank" rel="noopener noreferrer">
                   <i class="fa-solid fa-phone"></i>
                 </a>
               </li>
@@ -105,7 +122,7 @@ $custom_query = new WP_Query($args);
 
             <?php if (!empty($facebook)): ?>
               <li>
-                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($facebook); ?>">
+                <a href="<?php echo esc_url($facebook); ?>" target="_blank" rel="noopener noreferrer">
                   <i class="fa-brands fa-facebook-f"></i>
                 </a>
               </li>
@@ -113,7 +130,7 @@ $custom_query = new WP_Query($args);
 
             <?php if (!empty($instagram)): ?>
               <li>
-                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($instagram); ?>">
+                <a href="<?php echo esc_url($instagram); ?>" target="_blank" rel="noopener noreferrer">
                   <i class="fa-brands fa-instagram"></i>
                 </a>
               </li>
@@ -121,7 +138,7 @@ $custom_query = new WP_Query($args);
 
             <?php if (!empty($twitter_x)): ?>
               <li>
-                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($twitter_x); ?>">
+                <a href="<?php echo esc_url($twitter_x); ?>" target="_blank" rel="noopener noreferrer">
                   <i class="fa-brands fa-x-twitter"></i>
                 </a>
               </li>
@@ -129,7 +146,7 @@ $custom_query = new WP_Query($args);
 
             <?php if (!empty($ubicacion)): ?>
               <li>
-                <a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($ubicacion); ?>">
+                <a href="<?php echo esc_url($ubicacion); ?>" target="_blank" rel="noopener noreferrer">
                   <i class="fa-solid fa-location-dot"></i>
                 </a>
               </li>
@@ -138,7 +155,7 @@ $custom_query = new WP_Query($args);
 
           <?php if (!empty($reserva)): ?>
             <a class="btn" href="<?php echo esc_url($reserva); ?>" target="_blank" rel="noopener noreferrer">
-              Reservar Ahora
+              Reservar ahora
             </a>
           <?php endif; ?>
         </div>
