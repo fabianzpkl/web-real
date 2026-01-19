@@ -238,8 +238,7 @@ jQuery(function ($) {
   align-items: center;
   justify-content: center;
 
-  background: #333
-  border: 0;
+  background: #333;
   cursor: pointer;
 
   transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
@@ -249,6 +248,10 @@ jQuery(function ($) {
   font-size: 18px;
   line-height: 1;
   color: #fff;
+}
+
+.slick-arrow::before {
+  display: none;
 }
 
 /* Izquierda y derecha */
