@@ -227,19 +227,18 @@ jQuery(function ($) {
 /* Flechas custom */
 .carrusel-hoteles .custom-slick-arrow {
   position: absolute;
-  top: 50%;
+  top: 44%;
   transform: translateY(-50%);
   z-index: 5;
 
   width: 44px;
   height: 44px;
-  border-radius: 999px;
 
-  display: flex;
+  display: flex; 
   align-items: center;
   justify-content: center;
 
-  background: rgba(0, 0, 0, 0.55);
+  background: #333
   border: 0;
   cursor: pointer;
 
