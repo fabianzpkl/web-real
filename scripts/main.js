@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyClasses(deck) {
     const cards = Array.from(deck.querySelectorAll(".deck-card"));
     cards.forEach((c) =>
-      c.classList.remove("is-1", "is-2", "is-3", "is-4", "is-hidden", "is-out")
+      c.classList.remove("is-1", "is-2", "is-3", "is-4", "is-hidden", "is-out"),
     );
 
     if (cards[0]) cards[0].classList.add("is-1");
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 $(document).ready(function () {
   $(".carrusel-hoteles").slick({
-    arrows: false,
+    arrows: true,
     dots: false,
     infinite: false,
     slidesToShow: 3,
