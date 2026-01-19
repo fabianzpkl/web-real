@@ -138,14 +138,14 @@ $custom_query = new WP_Query($args);
 
 
 <script>
-jQuery(function($){
+jQuery(document).ready(function ($) {
   const $wrap = $('.carrusel-hoteles');
   const $buttons = $('.filter-tags-hotels .tag-hotel');
   const $select = $('#filterHotelsSelect');
 
   if (!$wrap.length) return;
 
-  // 1) Inicializar Slick UNA vez
+  // Inicializar Slick SOLO una vez
   if (!$wrap.hasClass('slick-initialized')) {
     $wrap.slick({
       arrows: true,
@@ -161,32 +161,32 @@ jQuery(function($){
       responsive: [
         { breakpoint: 1024, settings: { slidesToShow: 2 } },
         { breakpoint: 768, settings: { slidesToShow: 1 } }
-      ],
+      ]
     });
   }
 
   function setActive(filter) {
     $buttons.removeClass('is-active');
-    $buttons.filter('[data-filter="'+filter+'"]').addClass('is-active');
+    $buttons.filter('[data-filter="' + filter + '"]').addClass('is-active');
   }
 
   function applyFilter(filter) {
-    // Quita filtros anteriores
+    // Limpia filtros anteriores
     $wrap.slick('slickUnfilter');
 
-    // Aplica filtro nuevo (Slick recalcula bien, sin “ocultos”)
-    if (filter && filter !== 'all') {
+    // Aplica filtro real de Slick (NO display:none)
+    if (filter !== 'all') {
       $wrap.slick('slickFilter', '.' + filter);
     }
 
-    // Reinicia al primer slide y recalcula tamaños
+    // Recalcula
     $wrap.slick('slickGoTo', 0, true);
     $wrap.slick('setPosition');
   }
 
   // Botones
-  $buttons.on('click', function(){
-    const filter = $(this).data('filter'); // "all" o "categoria-XX"
+  $buttons.on('click', function () {
+    const filter = $(this).data('filter');
     setActive(filter);
     if ($select.length) $select.val(filter);
     applyFilter(filter);
@@ -194,7 +194,7 @@ jQuery(function($){
 
   // Select
   if ($select.length) {
-    $select.on('change', function(){
+    $select.on('change', function () {
       const filter = $(this).val();
       setActive(filter);
       applyFilter(filter);
@@ -205,4 +205,5 @@ jQuery(function($){
   setActive('all');
   applyFilter('all');
 });
+
 </script>
