@@ -171,33 +171,43 @@ $custom_query = new WP_Query($args);
 document.addEventListener('DOMContentLoaded', function () {
   const wrap = document.querySelector('.carrusel-hoteles');
   const buttons = document.querySelectorAll('.filter-tags-hotels .tag-hotel');
+  const select = document.querySelector('#filterHotelsSelect');
 
-  if (!wrap || !buttons.length) return;
+  if (!wrap) return;
 
   const cards = wrap.querySelectorAll('.card-hotel');
 
-  function setActive(btn) {
+  function setActiveByFilter(filter) {
     buttons.forEach(b => b.classList.remove('is-active'));
-    btn.classList.add('is-active');
+    const match = Array.from(buttons).find(b => b.getAttribute('data-filter') === filter);
+    if (match) match.classList.add('is-active');
   }
 
   function filterCards(filter) {
     cards.forEach(card => {
       if (filter === 'all') {
         card.style.display = '';
-        return;
+      } else {
+        card.style.display = card.classList.contains(filter) ? '' : 'none';
       }
-      card.style.display = card.classList.contains(filter) ? '' : 'none';
     });
   }
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       const filter = btn.getAttribute('data-filter');
-      setActive(btn);
+      setActiveByFilter(filter);
       filterCards(filter);
+      if (select) select.value = filter;
     });
   });
+
+  if (select) {
+    select.addEventListener('change', () => {
+      const filter = select.value;
+      setActiveByFilter(filter);
+      filterCards(filter);
+    });
+  }
 });
 </script>
-
