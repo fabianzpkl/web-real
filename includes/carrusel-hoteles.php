@@ -138,15 +138,15 @@ $custom_query = new WP_Query($args);
 
 
 <script>
-jQuery(document).ready(function ($) {
-  const $wrap = $('.carrusel-hoteles');
-  const $buttons = $('.filter-tags-hotels .tag-hotel');
-  const $select = $('#filterHotelsSelect');
+jQuery(function ($) {
+  const $wrap = $(".carrusel-hoteles");
+  const $buttons = $(".filter-tags-hotels .tag-hotel");
+  const $select = $("#filterHotelsSelect");
 
   if (!$wrap.length) return;
 
-  // Inicializar Slick SOLO una vez
-  if (!$wrap.hasClass('slick-initialized')) {
+  // Init slick UNA vez
+  if (!$wrap.hasClass("slick-initialized")) {
     $wrap.slick({
       arrows: true,
       dots: false,
@@ -158,35 +158,44 @@ jQuery(document).ready(function ($) {
       pauseOnHover: true,
       variableWidth: true,
       swipe: true,
+
+      // Flechas personalizadas (Font Awesome)
+      prevArrow:
+        '<button type="button" class="slick-arrow slick-prev custom-slick-arrow" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>',
+      nextArrow:
+        '<button type="button" class="slick-arrow slick-next custom-slick-arrow" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>',
+
       responsive: [
         { breakpoint: 1024, settings: { slidesToShow: 2 } },
-        { breakpoint: 768, settings: { slidesToShow: 1 } }
-      ]
+        { breakpoint: 768, settings: { slidesToShow: 1 } },
+      ],
     });
   }
 
   function setActive(filter) {
-    $buttons.removeClass('is-active');
-    $buttons.filter('[data-filter="' + filter + '"]').addClass('is-active');
+    $buttons.removeClass("is-active");
+    $buttons.filter(`[data-filter="${filter}"]`).addClass("is-active");
   }
 
   function applyFilter(filter) {
-    // Limpia filtros anteriores
-    $wrap.slick('slickUnfilter');
+    // Quita filtros anteriores
+    $wrap.slick("slickUnfilter");
 
-    // Aplica filtro real de Slick (NO display:none)
-    if (filter !== 'all') {
-      $wrap.slick('slickFilter', '.' + filter);
+    // Aplica filtro nuevo
+    if (filter && filter !== "all") {
+      $wrap.slick("slickFilter", "." + filter);
     }
 
-    // Recalcula
-    $wrap.slick('slickGoTo', 0, true);
-    $wrap.slick('setPosition');
+    // ✅ SIEMPRE al primer slide (0)
+    $wrap.slick("slickGoTo", 0, true);
+
+    // Recalcula layout (clave con variableWidth)
+    $wrap.slick("setPosition");
   }
 
   // Botones
-  $buttons.on('click', function () {
-    const filter = $(this).data('filter');
+  $buttons.on("click", function () {
+    const filter = $(this).data("filter");
     setActive(filter);
     if ($select.length) $select.val(filter);
     applyFilter(filter);
@@ -194,7 +203,7 @@ jQuery(document).ready(function ($) {
 
   // Select
   if ($select.length) {
-    $select.on('change', function () {
+    $select.on("change", function () {
       const filter = $(this).val();
       setActive(filter);
       applyFilter(filter);
@@ -202,8 +211,74 @@ jQuery(document).ready(function ($) {
   }
 
   // Estado inicial
-  setActive('all');
-  applyFilter('all');
+  setActive("all");
+  applyFilter("all");
 });
 
+
 </script>
+
+<style>
+  /* Asegura que el carrusel sea referencia para posicionar las flechas */
+.carrusel-hoteles {
+  position: relative;
+}
+
+/* Flechas custom */
+.carrusel-hoteles .custom-slick-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.55);
+  border: 0;
+  cursor: pointer;
+
+  transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.carrusel-hoteles .custom-slick-arrow i {
+  font-size: 18px;
+  line-height: 1;
+  color: #fff;
+}
+
+/* Izquierda y derecha */
+.carrusel-hoteles .slick-prev.custom-slick-arrow {
+  left: 10px;
+}
+
+.carrusel-hoteles .slick-next.custom-slick-arrow {
+  right: 10px;
+}
+
+/* Hover */
+.carrusel-hoteles .custom-slick-arrow:hover {
+  background: rgba(0, 0, 0, 0.75);
+  transform: translateY(-50%) scale(1.06);
+}
+
+/* Disabled */
+.carrusel-hoteles .custom-slick-arrow.slick-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Mobile: un poquito más pequeñas */
+@media (max-width: 768px) {
+  .carrusel-hoteles .custom-slick-arrow {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+</style>
