@@ -254,7 +254,7 @@ $(document).ready(function () {
   $(".carrusel-hoteles").slick({
     arrows: true,
     dots: false,
-    infinite: true,
+    infinite: false,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
@@ -263,8 +263,8 @@ $(document).ready(function () {
     variableWidth: true,
     swipe: true,
     breakpoints: {
-      0: { slidesPerView: 1 },
-      768: { slidesPerView: 1 },
+      0: { slidesToShow: 1 },
+      768: { slidesToShow: 1 },
       1024: { slidesPerView: 3 },
     },
   });
