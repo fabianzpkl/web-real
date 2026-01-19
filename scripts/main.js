@@ -251,23 +251,30 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 $(document).ready(function () {
-  $(".carrusel-hoteles").slick({
-    arrows: true,
-    dots: false,
-    infinite: false,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    pauseOnFocus: true,
-    pauseOnHover: true,
-    variableWidth: true,
-    swipe: true,
-    breakpoints: {
-      0: { slidesToShow: 1 },
-      768: { slidesToShow: 1 },
-      1024: { slidesPerView: 3 },
-    },
-  });
+  function initHotelsSlick($el) {
+    $el.slick({
+      arrows: true,
+      dots: false,
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: true,
+      pauseOnFocus: true,
+      pauseOnHover: true,
+      variableWidth: true,
+      swipe: true,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: { slidesToShow: 2 },
+        },
+        {
+          breakpoint: 768,
+          settings: { slidesToShow: 1 },
+        },
+      ],
+    });
+  }
   $(".cont-more-info").slick({
     infinite: false,
     arrows: false,

@@ -168,46 +168,71 @@ $custom_query = new WP_Query($args);
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const wrap = document.querySelector('.carrusel-hoteles');
-  const buttons = document.querySelectorAll('.filter-tags-hotels .tag-hotel');
-  const select = document.querySelector('#filterHotelsSelect');
+jQuery(function ($) {
+  const $wrap = $('.carrusel-hoteles');
+  const $buttons = $('.filter-tags-hotels .tag-hotel');
+  const $select = $('#filterHotelsSelect');
 
-  if (!wrap) return;
+  if (!$wrap.length) return;
 
-  const cards = wrap.querySelectorAll('.card-hotel');
+  // Guarda una copia “fuente” (HTML) de todas las cards
+  const allHTML = $wrap.html();
+
+  function destroySlick() {
+    if ($wrap.hasClass('slick-initialized')) {
+      $wrap.slick('unslick');
+    }
+  }
+
+  function initSlick() {
+    initHotelsSlick($wrap);
+
+    // Asegura recalculo de posiciones (especialmente con variableWidth)
+    $wrap.slick('setPosition');
+  }
 
   function setActiveByFilter(filter) {
-    buttons.forEach(b => b.classList.remove('is-active'));
-    const match = Array.from(buttons).find(b => b.getAttribute('data-filter') === filter);
-    if (match) match.classList.add('is-active');
+    $buttons.removeClass('is-active');
+    const $match = $buttons.filter(`[data-filter="${filter}"]`);
+    if ($match.length) $match.addClass('is-active');
   }
 
-  function filterCards(filter) {
-    cards.forEach(card => {
-      if (filter === 'all') {
-        card.style.display = '';
-      } else {
-        card.style.display = card.classList.contains(filter) ? '' : 'none';
-      }
-    });
+  function rebuildByFilter(filter) {
+    // 1) destruir slick antes de tocar DOM
+    destroySlick();
+
+    // 2) restaurar todos
+    $wrap.html(allHTML);
+
+    // 3) eliminar los que no aplican (NO ocultar)
+    if (filter !== 'all') {
+      $wrap.find('.card-hotel').not('.' + filter).remove();
+    }
+
+    // 4) volver a iniciar slick
+    initSlick();
   }
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-filter');
-      setActiveByFilter(filter);
-      filterCards(filter);
-      if (select) select.value = filter;
-    });
+  // Init slick al cargar (con todos)
+  initSlick();
+
+  // Botones
+  $buttons.on('click', function () {
+    const filter = $(this).data('filter');
+    setActiveByFilter(filter);
+    rebuildByFilter(filter);
+
+    if ($select.length) $select.val(filter);
   });
 
-  if (select) {
-    select.addEventListener('change', () => {
-      const filter = select.value;
+  // Select
+  if ($select.length) {
+    $select.on('change', function () {
+      const filter = $(this).val();
       setActiveByFilter(filter);
-      filterCards(filter);
+      rebuildByFilter(filter);
     });
   }
 });
 </script>
+
