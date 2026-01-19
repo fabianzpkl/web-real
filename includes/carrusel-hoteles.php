@@ -1,6 +1,5 @@
 <div class="filter-hotels">
   <?php
-  // Traer términos (países) de la taxonomía categoria_hoteles
   $paises = get_terms([
     'taxonomy'   => 'categoria_hoteles',
     'hide_empty' => true,
@@ -11,9 +10,7 @@
 
   <!-- BOTONES (DESKTOP) -->
   <div class="filter-tags-hotels" role="tablist" aria-label="Filtrar hoteles por país">
-    <button type="button" class="tag-hotel is-active btn" data-filter="all">
-      Ver todos
-    </button>
+    <button type="button" class="tag-hotel is-active btn" data-filter="all">Ver todos</button>
 
     <?php if (!empty($paises) && !is_wp_error($paises)): ?>
       <?php foreach ($paises as $pais): ?>
@@ -30,7 +27,8 @@
 
   <!-- SELECT (MOBILE) -->
   <div class="filter-select-hotels">
-    <select id="filterHotelsSelect" class="filter-hotels btn">
+    <label class="sr-only" for="filterHotelsSelect">Filtrar hoteles por país</label>
+    <select id="filterHotelsSelect" class="select-hotel btn">
       <option value="all">Ver todos</option>
 
       <?php if (!empty($paises) && !is_wp_error($paises)): ?>
@@ -45,7 +43,7 @@
 </div>
 
 <?php
-// 1) Traer SOLO IDs (más rápido)
+// Random de posts (IDs) para respetar orden aleatorio
 $ids = get_posts([
   'post_type'      => 'hoteles',
   'posts_per_page' => -1,
@@ -54,10 +52,7 @@ $ids = get_posts([
   'cache_results'  => false,
 ]);
 
-// 2) Random en PHP
-if (!empty($ids)) {
-  shuffle($ids);
-}
+if (!empty($ids)) shuffle($ids);
 
 $args = [
   'post_type'      => 'hoteles',
@@ -89,9 +84,7 @@ $custom_query = new WP_Query($args);
       $clase_categoria = implode(' ', $class_list);
 
       $thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium');
-      if (!$thumb) {
-        $thumb = get_template_directory_uri() . '/assets/images/default-hotel.jpg';
-      }
+      if (!$thumb) $thumb = get_template_directory_uri() . '/assets/images/default-hotel.jpg';
 
       // Campos ACF
       $telefono   = get_field('telefono');
@@ -107,55 +100,32 @@ $custom_query = new WP_Query($args);
 
         <div class="cont-card-hotel">
           <label><?php echo !empty($term_names) ? esc_html(implode(', ', $term_names)) : ''; ?></label>
-
           <h6><?php the_title(); ?></h6>
 
           <ul>
             <?php if (!empty($telefono)): ?>
-              <li>
-                <a href="tel:<?php echo esc_attr($telefono); ?>" target="_blank" rel="noopener noreferrer">
-                  <i class="fa-solid fa-phone"></i>
-                </a>
-              </li>
+              <li><a target="_blank" rel="noopener noreferrer" href="tel:<?php echo esc_attr($telefono); ?>"><i class="fa-solid fa-phone"></i></a></li>
             <?php endif; ?>
 
             <?php if (!empty($facebook)): ?>
-              <li>
-                <a href="<?php echo esc_url($facebook); ?>" target="_blank" rel="noopener noreferrer">
-                  <i class="fa-brands fa-facebook-f"></i>
-                </a>
-              </li>
+              <li><a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($facebook); ?>"><i class="fa-brands fa-facebook-f"></i></a></li>
             <?php endif; ?>
 
             <?php if (!empty($instagram)): ?>
-              <li>
-                <a href="<?php echo esc_url($instagram); ?>" target="_blank" rel="noopener noreferrer">
-                  <i class="fa-brands fa-instagram"></i>
-                </a>
-              </li>
+              <li><a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($instagram); ?>"><i class="fa-brands fa-instagram"></i></a></li>
             <?php endif; ?>
 
             <?php if (!empty($twitter_x)): ?>
-              <li>
-                <a href="<?php echo esc_url($twitter_x); ?>" target="_blank" rel="noopener noreferrer">
-                  <i class="fa-brands fa-x-twitter"></i>
-                </a>
-              </li>
+              <li><a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($twitter_x); ?>"><i class="fa-brands fa-x-twitter"></i></a></li>
             <?php endif; ?>
 
             <?php if (!empty($ubicacion)): ?>
-              <li>
-                <a href="<?php echo esc_url($ubicacion); ?>" target="_blank" rel="noopener noreferrer">
-                  <i class="fa-solid fa-location-dot"></i>
-                </a>
-              </li>
+              <li><a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($ubicacion); ?>"><i class="fa-solid fa-location-dot"></i></a></li>
             <?php endif; ?>
           </ul>
 
           <?php if (!empty($reserva)): ?>
-            <a class="btn" href="<?php echo esc_url($reserva); ?>" target="_blank" rel="noopener noreferrer">
-              Reservar ahora
-            </a>
+            <a class="btn" href="<?php echo esc_url($reserva); ?>" target="_blank" rel="noopener noreferrer">Reservar ahora</a>
           <?php endif; ?>
         </div>
       </div>
@@ -168,95 +138,71 @@ $custom_query = new WP_Query($args);
 
 
 <script>
-jQuery(function ($) {
+jQuery(function($){
   const $wrap = $('.carrusel-hoteles');
-  const $source = $('.hoteles-source');
   const $buttons = $('.filter-tags-hotels .tag-hotel');
   const $select = $('#filterHotelsSelect');
 
-  if (!$wrap.length || !$source.length) return;
+  if (!$wrap.length) return;
 
-  function destroySlick() {
-    if ($wrap.hasClass('slick-initialized')) {
-      $wrap.slick('unslick');
-    }
+  // 1) Inicializar Slick UNA vez
+  if (!$wrap.hasClass('slick-initialized')) {
+    $wrap.slick({
+      arrows: true,
+      dots: false,
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: true,
+      pauseOnFocus: true,
+      pauseOnHover: true,
+      variableWidth: true,
+      swipe: true,
+      responsive: [
+        { breakpoint: 1024, settings: { slidesToShow: 2 } },
+        { breakpoint: 768, settings: { slidesToShow: 1 } }
+      ],
+    });
   }
 
-  function initSlick() {
-    // Usa tu función global del main.js
-    if (typeof window.initHotelsSlick === 'function') {
-      window.initHotelsSlick($wrap);
-      $wrap.slick('setPosition');
-    } else if (typeof initHotelsSlick === 'function') {
-      initHotelsSlick($wrap);
-      $wrap.slick('setPosition');
-    } else {
-      // fallback (por si no existiera)
-      $wrap.slick({
-        arrows: true,
-        dots: false,
-        infinite: false,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        autoplay: true,
-        pauseOnFocus: true,
-        pauseOnHover: true,
-        variableWidth: true,
-        swipe: true,
-        responsive: [
-          { breakpoint: 1024, settings: { slidesToShow: 2 } },
-          { breakpoint: 768, settings: { slidesToShow: 1 } }
-        ]
-      });
-    }
-  }
-
-  function setActiveByFilter(filter) {
+  function setActive(filter) {
     $buttons.removeClass('is-active');
-    $buttons.filter(`[data-filter="${filter}"]`).addClass('is-active');
+    $buttons.filter('[data-filter="'+filter+'"]').addClass('is-active');
   }
 
-  function build(filter) {
-    // 1) destruir slick
-    destroySlick();
+  function applyFilter(filter) {
+    // Quita filtros anteriores
+    $wrap.slick('slickUnfilter');
 
-    // 2) vaciar carrusel visible
-    $wrap.empty();
+    // Aplica filtro nuevo (Slick recalcula bien, sin “ocultos”)
+    if (filter && filter !== 'all') {
+      $wrap.slick('slickFilter', '.' + filter);
+    }
 
-    // 3) clonar desde fuente (siempre limpio)
-    const $all = $source.find('.card-hotel').clone(true, true);
-
-    // 4) filtrar (remover del DOM, NO ocultar)
-    const $filtered = (filter === 'all')
-      ? $all
-      : $all.filter('.' + filter);
-
-    // 5) pintar
-    $wrap.append($filtered);
-
-    // 6) reiniciar slick
-    initSlick();
+    // Reinicia al primer slide y recalcula tamaños
+    $wrap.slick('slickGoTo', 0, true);
+    $wrap.slick('setPosition');
   }
-
-  // Inicial
-  build('all');
 
   // Botones
-  $buttons.on('click', function () {
-    const filter = $(this).data('filter');
-    setActiveByFilter(filter);
+  $buttons.on('click', function(){
+    const filter = $(this).data('filter'); // "all" o "categoria-XX"
+    setActive(filter);
     if ($select.length) $select.val(filter);
-    build(filter);
+    applyFilter(filter);
   });
 
   // Select
   if ($select.length) {
-    $select.on('change', function () {
+    $select.on('change', function(){
       const filter = $(this).val();
-      setActiveByFilter(filter);
-      build(filter);
+      setActive(filter);
+      applyFilter(filter);
     });
   }
+
+  // Estado inicial
+  setActive('all');
+  applyFilter('all');
 });
 </script>
-
