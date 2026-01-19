@@ -195,3 +195,35 @@ add_filter('wp_check_filetype_and_ext', function ($data, $file, $filename, $mime
     'proper_filename' => $data['proper_filename']
   ];
 }, 10, 4);
+
+
+add_action('wp_enqueue_scripts', function () {
+
+  // jQuery de WordPress
+  wp_enqueue_script('jquery');
+
+  // Slick (ajusta la ruta a donde tengas slick)
+  wp_enqueue_style(
+    'slick-css',
+    get_template_directory_uri() . '/assets/slick/slick.css',
+    [],
+    '1.8.1'
+  );
+
+  wp_enqueue_script(
+    'slick-js',
+    get_template_directory_uri() . '/assets/slick/slick.min.js',
+    ['jquery'],
+    '1.8.1',
+    true
+  );
+
+  // Tu main.js (debe ir después de slick y jquery)
+  wp_enqueue_script(
+    'theme-main',
+    get_template_directory_uri() . '/assets/js/main.js',
+    ['jquery', 'slick-js'],
+    '1.0.0',
+    true
+  );
+});
