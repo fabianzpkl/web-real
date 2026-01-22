@@ -42,13 +42,11 @@ get_header(); // Incluye el encabezado
                 </span>
 
             </button>
-            <button class="actionbar bar4">
-                <i class="fa-solid fa-hotel"></i>
-                <span>
-                    Ver todos los hoteles
-                </span>
+            <button class="actionbar bar4" onclick="window.location.href='/hoteles'">
+    <i class="fa-solid fa-hotel"></i>
+    <span>Ver todos los hoteles</span>
+</button>
 
-            </button>
         </div>
         <div class="cont-more-info">
             <div class="slide-more-info" style="background:url(' <?php the_field('imagen_de_fondo_1'); ?> ') center center">
@@ -62,7 +60,14 @@ get_header(); // Incluye el encabezado
                     <p>
                         <?php the_field("descripcion_1"); ?>
                     </p>
-                    <a href="<?php the_field('link_del_boton_1'); ?>" target="_blank" class="btn">Ver más</a>
+                    <?php 
+$link = get_field('link_del_boton_1');
+
+if( $link ) : ?>
+    <a href="<?php echo esc_url($link); ?>" target="_blank" class="btn">
+        Ver más
+    </a>
+<?php endif; ?>
                 </div>
             </div>
             <div class="slide-more-info">
@@ -77,7 +82,14 @@ get_header(); // Incluye el encabezado
                         <p>
                             <?php the_field("descripcion_2"); ?>
                         </p>
-                        <a href="<?php the_field('link_del_boton_2'); ?>" target="_blank" class="btn">Ver más</a>
+                        <?php 
+$link = get_field('link_del_boton_2');
+
+if( $link ) : ?>
+    <a href="<?php echo esc_url($link); ?>" target="_blank" class="btn">
+        Ver más
+    </a>
+<?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -93,7 +105,14 @@ get_header(); // Incluye el encabezado
                         <p>
                             <?php the_field("descripcion_3"); ?>
                         </p>
-                        <a href="<?php the_field('link_del_boton_3'); ?>" target="_blank" class="btn">Ver más</a>
+                        <?php 
+$link = get_field('link_del_boton_3');
+
+if( $link ) : ?>
+    <a href="<?php echo esc_url($link); ?>" target="_blank" class="btn">
+        Ver más
+    </a>
+<?php endif; ?>
                     </div>
                 </div>
             </div>
