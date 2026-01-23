@@ -42,6 +42,7 @@ Template Name: Hoteles
     ?>
 
     <!-- TOP BAR: SELECT izquierda + contador derecha -->
+     <div class="container">
     <div class="hotels-topbar">
       <div class="hotels-filter">
         <label class="sr-only" for="filterHotelsSelect">Filtrar hoteles por país</label>
@@ -57,7 +58,7 @@ Template Name: Hoteles
           <?php endif; ?>
         </select>
       </div>
-
+    </div>
       <div class="hotels-count">
         Mostrando <strong id="visibleHotelsCount">0</strong> hoteles
       </div>

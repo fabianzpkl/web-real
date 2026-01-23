@@ -348,6 +348,14 @@ jQuery(function ($) {
       });
     }
 
+    $(".actionbar")
+      .not(".bar4")
+      .on("click", function () {
+        $(".more-info").addClass("open_menu");
+        $(".actionbar").removeClass("active");
+        $(this).addClass("active");
+      });
+
     $(".actionbar").on("click", function () {
       $(".more-info").addClass("open_menu");
       $(".actionbar").removeClass("active");
