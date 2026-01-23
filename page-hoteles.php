@@ -64,6 +64,7 @@ Template Name: Hoteles
     </div>
 
     <!-- LISTADO -->
+     <div class="container">
     <div class="hotels-grid" id="hotelsGrid">
       <?php if ($custom_query->have_posts()) : ?>
         <?php while ($custom_query->have_posts()) : $custom_query->the_post(); ?>
@@ -134,6 +135,7 @@ Template Name: Hoteles
       <?php else : ?>
         <p>No se encontraron hoteles.</p>
       <?php endif; ?>
+    </div>
     </div>
 
     <script>
