@@ -15,6 +15,7 @@ while (have_posts()) :
             </div>
 
         </div>
+        <div class="overlay"></div>
     </div>
 
     <section class="cont_page">

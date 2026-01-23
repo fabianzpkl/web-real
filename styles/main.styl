@@ -394,8 +394,17 @@ header
     background-size cover
     background-position center center
     background-repeat no-repeat
+    position: relative
+    .overlay
+        background: rgba(0,0,0,0.7)
+        position: absolute
+        z-index: 1
+        left: 0
+        top 0
     .container
         height 100%
+        position: relative
+        z-index: 2
         .cont_title_page
             padding 250px 0
         h1, p
