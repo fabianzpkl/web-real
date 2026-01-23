@@ -24,7 +24,6 @@ jQuery(function ($) {
         variableWidth: true,
         swipe: true,
 
-        // Flechas custom (Font Awesome)
         prevArrow:
           '<button type="button" class="slick-arrow slick-prev custom-slick-arrow" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>',
         nextArrow:
@@ -38,19 +37,15 @@ jQuery(function ($) {
     }
 
     function setActiveByFilter(filter) {
-      // Activo en botones
       if ($buttons.length) {
         $buttons.removeClass("is-active");
         $buttons.filter(`[data-filter="${filter}"]`).addClass("is-active");
       }
 
-      // Sincroniza select mobile
       if ($selectMobile.length) {
         $selectMobile.val(filter);
       }
 
-      // Sincroniza select viejo (#filtro_categorias)
-      // Si filter = "categoria-23" => value debe ser "23"
       if ($selectOld.length) {
         if (filter === "all") {
           $selectOld.val("todos");
@@ -64,22 +59,16 @@ jQuery(function ($) {
     }
 
     function applySlickFilter(filter) {
-      // Limpia filtro anterior
       $wrap.slick("slickUnfilter");
 
-      // Aplica filtro nuevo
       if (filter && filter !== "all") {
         $wrap.slick("slickFilter", "." + filter);
       }
 
-      // ✅ Siempre al primer slide
       $wrap.slick("slickGoTo", 0, true);
       $wrap.slick("setPosition");
     }
 
-    // --- Eventos ---
-
-    // Select viejo (term_id)
     if ($selectOld.length) {
       $selectOld.on("change", function () {
         const val = $(this).val(); // "todos" o "23"
@@ -90,16 +79,14 @@ jQuery(function ($) {
       });
     }
 
-    // Botones
     if ($buttons.length) {
       $buttons.on("click", function () {
-        const filter = $(this).data("filter"); // "all" o "categoria-23"
+        const filter = $(this).data("filter");
         setActiveByFilter(filter);
         applySlickFilter(filter);
       });
     }
 
-    // Select mobile (ya viene como all/categoria-xx)
     if ($selectMobile.length) {
       $selectMobile.on("change", function () {
         const filter = $(this).val();
@@ -108,7 +95,6 @@ jQuery(function ($) {
       });
     }
 
-    // Estado inicial
     setActiveByFilter("all");
     applySlickFilter("all");
   })();
@@ -129,7 +115,6 @@ jQuery(function ($) {
     )
       return;
 
-    // Inicializa Materialize modal
     const modalInstance = M.Modal.init(modalEl, {
       onOpenEnd: function () {
         const $slider = $(".slider-tp2b");
@@ -330,7 +315,7 @@ jQuery(function ($) {
   })();
 
   // =========================================================
-  // 4) More info slider (tu bloque, sin cambios, pero ordenado)
+  // 4) More info slider (tu bloque, con excepción para bar4)
   // =========================================================
   (function initMoreInfo() {
     const $more = $(".cont-more-info");
@@ -348,6 +333,7 @@ jQuery(function ($) {
       });
     }
 
+    // ✅ SOLO abre menú para actionbar EXCEPTO bar4
     $(".actionbar")
       .not(".bar4")
       .on("click", function () {
@@ -355,12 +341,6 @@ jQuery(function ($) {
         $(".actionbar").removeClass("active");
         $(this).addClass("active");
       });
-
-    $(".actionbar").on("click", function () {
-      $(".more-info").addClass("open_menu");
-      $(".actionbar").removeClass("active");
-      $(this).addClass("active");
-    });
 
     $(".close_bar").on("click", function () {
       $(".more-info").removeClass("open_menu");
@@ -376,6 +356,11 @@ jQuery(function ($) {
     $(".bar3").on("click", function () {
       $more.slick("slickGoTo", 2);
     });
+
+    // (Opcional, pero útil) si quieres evitar cualquier “flash” por bubbling
+    // $(".bar4").on("click", function (e) {
+    //   e.stopPropagation();
+    // });
 
     $("#toggle-bar-hotel").on("click", function () {
       $(".bar-hotels").toggleClass("bar-hotels-active");
