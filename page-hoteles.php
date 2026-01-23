@@ -43,25 +43,22 @@ Template Name: Hoteles
 
     <!-- TOP BAR: SELECT izquierda + contador derecha -->
      <div class="container">
-    <div class="hotels-topbar">
-      <div class="hotels-filter">
-        <label class="sr-only" for="filterHotelsSelect">Filtrar hoteles por país</label>
-        <select id="filterHotelsSelect" class="select-hotel btn">
-          <option value="all">Ver todos</option>
+        <div class="hotels-topbar">
+            <div class="hotels-filter">
+                <label class="sr-only" for="filterHotelsSelect">Filtrar hoteles por país</label>
+                <select id="filterHotelsSelect" class="select-hotel btn">
+                <option value="all">Ver todos</option>
 
-          <?php if (!empty($paises) && !is_wp_error($paises)) : ?>
-            <?php foreach ($paises as $pais) : ?>
-              <option value="categoria-<?php echo (int) $pais->term_id; ?>">
-                <?php echo esc_html($pais->name); ?>
-              </option>
-            <?php endforeach; ?>
-          <?php endif; ?>
-        </select>
-      </div>
-    </div>
-      <div class="hotels-count">
-        Mostrando <strong id="visibleHotelsCount">0</strong> hoteles
-      </div>
+                <?php if (!empty($paises) && !is_wp_error($paises)) : ?>
+                    <?php foreach ($paises as $pais) : ?>
+                    <option value="categoria-<?php echo (int) $pais->term_id; ?>">
+                        <?php echo esc_html($pais->name); ?>
+                    </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </select>
+            </div>
+        </div>
     </div>
 
     <!-- LISTADO -->
